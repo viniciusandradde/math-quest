@@ -1,7 +1,10 @@
-import { fireEvent, render, screen, within } from '@testing-library/react';
+import { act, fireEvent, render, screen, within } from '@testing-library/react';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { summarizeChallengeAttempts } from '../learning/challenges';
 import { summarizeEarlyAttempts } from '../learning/early';
+import type { AgeProfileId } from '../learning/profiles';
+import { createState, DEFAULT_CONFIG, type WellbeingConfig, type WellbeingState } from '../wellbeing/core';
+import { resetGateLockout } from '../wellbeing/ParentGate';
 
 const dbMock = vi.hoisted(() => ({
   loadAgeProfile: vi.fn(),
@@ -12,13 +15,42 @@ const dbMock = vi.hoisted(() => ({
   recordAnswer: vi.fn(async () => {}),
   recordChallengeAttempt: vi.fn(async () => {}),
   saveDiagnostic: vi.fn(async () => {}),
-  saveMemorySession: vi.fn(async () => {})
+  saveMemorySession: vi.fn(async () => {}),
+  loadWellbeing: vi.fn(),
+  saveWellbeing: vi.fn(async () => {})
 }));
 
 vi.mock('virtual:pwa-register', () => ({ registerSW: () => async () => {} }));
 vi.mock('../lib/db', () => dbMock);
 
 import App from './App';
+
+/** Janela de 24 h: os testes não dependem da hora em que rodam (nem do fuso do CI). */
+const allDay = { windowStart: '00:00', windowEnd: '24:00' };
+function wellbeingRecord(profile: AgeProfileId, state: Partial<WellbeingState> = {}, config: Partial<WellbeingConfig> = {}) {
+  return { profile, config: { ...DEFAULT_CONFIG[profile], ...allDay, ...config }, state: { ...createState(Date.now()), ...state } };
+}
+function useWellbeingRecord(state?: Partial<WellbeingState>, config?: Partial<WellbeingConfig>) {
+  dbMock.loadWellbeing.mockImplementation(async (profile: AgeProfileId) => wellbeingRecord(profile, state, config));
+}
+const lastSavedState = () => (dbMock.saveWellbeing.mock.calls.at(-1) as unknown as [{ state: WellbeingState }])[0].state;
+
+/** Portão dos adultos: segurar 3 segundos. */
+function holdGate() {
+  const hold = screen.getByRole('button', { name: 'Segure por 3 segundos' });
+  vi.useFakeTimers();
+  try {
+    fireEvent.pointerDown(hold);
+    act(() => { vi.advanceTimersByTime(3100); });
+  } finally {
+    vi.useRealTimers();
+  }
+}
+function answerGateSum() {
+  const [a, b] = screen.getByText(/Quanto é/).textContent!.match(/(\d+) \+ (\d+)/)!.slice(1).map(Number);
+  fireEvent.change(screen.getByLabelText(/Quanto é/), { target: { value: String(a + b) } });
+  fireEvent.click(screen.getByRole('button', { name: 'Entrar' }));
+}
 
 const emptyOverview = () => ({
   multiplication: { factsSeen: 0, attempts: 0, correct: 0, accuracy: 0 },
@@ -30,6 +62,8 @@ const emptyOverview = () => ({
 describe('age profile gate', () => {
   beforeEach(() => {
     vi.clearAllMocks();
+    resetGateLockout();
+    useWellbeingRecord();
     dbMock.loadAgeProfile.mockResolvedValue(null);
     dbMock.getEarlySummary.mockResolvedValue(summarizeEarlyAttempts([]));
     dbMock.getLearningOverview.mockResolvedValue(emptyOverview());
@@ -56,7 +90,10 @@ describe('age profile gate', () => {
     dbMock.loadAgeProfile.mockResolvedValue('age-3-6');
     render(<App />);
     fireEvent.click(await screen.findByRole('button', { name: 'Adultos' }));
-    fireEvent.click(screen.getByRole('button', { name: 'Trocar perfil de idade' }));
+    expect(screen.queryByRole('button', { name: 'Trocar perfil de idade' })).not.toBeInTheDocument();
+    holdGate();
+    answerGateSum();
+    fireEvent.click(await screen.findByRole('button', { name: 'Trocar perfil de idade' }));
     fireEvent.click(screen.getByRole('button', { name: 'Escolher outro perfil' }));
     fireEvent.click(await screen.findByRole('button', { name: 'Explorador Estratégico, 11 a 13 anos' }));
     expect(dbMock.saveAgeProfile).toHaveBeenLastCalledWith('age-11-13');
@@ -67,7 +104,13 @@ describe('age profile gate', () => {
     dbMock.loadAgeProfile.mockResolvedValue('age-11-13');
     render(<App />);
     fireEvent.click(await screen.findByRole('button', { name: 'Progresso' }));
-    fireEvent.click(screen.getByRole('button', { name: 'Trocar perfil de idade' }));
+    fireEvent.click(screen.getByRole('button', { name: 'Abrir área dos adultos' }));
+    holdGate();
+    answerGateSum();
+    fireEvent.change(screen.getByLabelText('Novo PIN'), { target: { value: '4821' } });
+    fireEvent.change(screen.getByLabelText('Repita o PIN'), { target: { value: '4821' } });
+    fireEvent.click(screen.getByRole('button', { name: 'Salvar PIN e entrar' }));
+    fireEvent.click(await screen.findByRole('button', { name: 'Trocar perfil de idade' }));
     fireEvent.click(screen.getByRole('button', { name: 'Escolher outro perfil' }));
     fireEvent.click(await screen.findByRole('button', { name: 'Voltar sem trocar' }));
     expect(await screen.findByRole('button', { name: /JOGAR/ })).toBeInTheDocument();
@@ -78,6 +121,8 @@ describe('age profile gate', () => {
 describe('11–13 explorer app', () => {
   beforeEach(() => {
     vi.clearAllMocks();
+    resetGateLockout();
+    useWellbeingRecord();
     dbMock.loadAgeProfile.mockResolvedValue('age-11-13');
     dbMock.getLearningOverview.mockResolvedValue(emptyOverview());
   });
@@ -150,5 +195,131 @@ describe('11–13 explorer app', () => {
     const items = screen.getByRole('list', { name: 'Itens e como conquistar' });
     expect(items).toHaveTextContent('Chip IA');
     expect(within(items).getAllByText('Conquistado').length).toBeGreaterThanOrEqual(3);
+  });
+});
+
+describe('healthy pause (Padrão VSA de Bem-Estar)', () => {
+  beforeEach(() => {
+    vi.clearAllMocks();
+    resetGateLockout();
+    dbMock.getEarlySummary.mockResolvedValue(summarizeEarlyAttempts([]));
+    dbMock.getLearningOverview.mockResolvedValue(emptyOverview());
+  });
+
+  it('3–6: keeps the adults area behind the hold + 2-digit sum gate', async () => {
+    useWellbeingRecord();
+    dbMock.loadAgeProfile.mockResolvedValue('age-3-6');
+    render(<App />);
+    fireEvent.click(await screen.findByRole('button', { name: 'Adultos' }));
+    expect(screen.getByRole('dialog', { name: 'Área dos adultos' })).toBeInTheDocument();
+    holdGate();
+    fireEvent.change(screen.getByLabelText(/Quanto é/), { target: { value: '1' } });
+    fireEvent.click(screen.getByRole('button', { name: 'Entrar' }));
+    expect(screen.getByRole('alert')).toHaveTextContent('Resposta incorreta');
+    answerGateSum();
+    expect(await screen.findByRole('heading', { name: 'Pausa saudável' })).toBeInTheDocument();
+    expect(screen.getByRole('switch', { name: 'Pausa saudável ligada' })).toHaveAttribute('aria-checked', 'true');
+    const session = screen.getByRole('radiogroup', { name: 'Tempo de uso por rodada' });
+    expect(within(session).getByRole('radio', { name: '15 min', checked: true })).toBeInTheDocument();
+    expect(within(screen.getByRole('list', { name: 'Uso nos últimos 7 dias' })).getAllByRole('listitem')).toHaveLength(7);
+    fireEvent.click(within(session).getByRole('radio', { name: '20 min' }));
+    expect(lastSavedState()).toBeDefined();
+    expect((dbMock.saveWellbeing.mock.calls.at(-1) as unknown as [{ config: WellbeingConfig }])[0].config.sessionMin).toBe(20);
+  });
+
+  it('3–6: mission → touch the hand → sun break, without numbers', async () => {
+    useWellbeingRecord({ status: 'mission', missionId: 'contar-brinquedos' });
+    dbMock.loadAgeProfile.mockResolvedValue('age-3-6');
+    render(<App />);
+    expect(await screen.findByRole('heading', { name: 'Missão especial!' })).toBeInTheDocument();
+    expect(screen.getByText('Conte seus brinquedos')).toBeInTheDocument();
+    expect(screen.queryByRole('navigation', { name: 'Navegação principal' })).not.toBeInTheDocument();
+    fireEvent.click(screen.getByRole('button', { name: 'Toque na mão e vá!' }));
+    expect(lastSavedState()).toMatchObject({ status: 'break' });
+    const sky = await screen.findByRole('button', { name: /O sol está atravessando o céu/ });
+    expect(sky).not.toHaveTextContent(/\d/);
+    fireEvent.click(sky);
+    expect(lastSavedState()).toMatchObject({ insistCount: 1 });
+  });
+
+  it('3–6: after the break the child gives a high five and goes back to playing', async () => {
+    useWellbeingRecord({ status: 'break', missionId: 'agua', breakStartedAt: Date.now() - 16 * 60_000 });
+    dbMock.loadAgeProfile.mockResolvedValue('age-3-6');
+    render(<App />);
+    fireEvent.click(await screen.findByRole('button', { name: 'Toca aqui!' }));
+    expect(lastSavedState()).toMatchObject({ status: 'idle', roundsToday: 1, activeSec: 0 });
+    expect(await screen.findByRole('list', { name: 'Brincadeiras' })).toBeInTheDocument();
+  });
+
+  it('3–6: shows "Até amanhã" after the last round and outside the allowed hours', async () => {
+    useWellbeingRecord({ status: 'done', roundsToday: 2 });
+    dbMock.loadAgeProfile.mockResolvedValue('age-3-6');
+    const { unmount } = render(<App />);
+    expect(await screen.findByRole('heading', { name: 'Até amanhã!' })).toBeInTheDocument();
+    expect(screen.queryByRole('list', { name: 'Brincadeiras' })).not.toBeInTheDocument();
+    unmount();
+
+    useWellbeingRecord({}, { windowStart: '10:00', windowEnd: '10:00' });
+    render(<App />);
+    expect(await screen.findByRole('heading', { name: 'Hora de descansar' })).toBeInTheDocument();
+  });
+
+  it('3–6: an adult can unlock a pause from the pause screen', async () => {
+    useWellbeingRecord({ status: 'break', missionId: 'agua', breakStartedAt: Date.now() });
+    dbMock.loadAgeProfile.mockResolvedValue('age-3-6');
+    render(<App />);
+    await screen.findByRole('heading', { name: 'Hora da missão fora da tela' });
+    fireEvent.click(screen.getByRole('button', { name: 'Adultos' }));
+    holdGate();
+    answerGateSum();
+    fireEvent.click(await screen.findByRole('button', { name: 'Liberar agora' }));
+    expect(lastSavedState()).toMatchObject({ status: 'idle', activeSec: 0 });
+    fireEvent.click(screen.getByRole('button', { name: 'Brincadeiras' }));
+    expect(await screen.findByText('Combinado com o adulto. Vamos continuar! Toque em uma brincadeira.')).toBeInTheDocument();
+  });
+
+  it('11–13: shows the "Pausa ativa" card and starts the break', async () => {
+    useWellbeingRecord({ status: 'mission', missionId: 'area-quarto' });
+    dbMock.loadAgeProfile.mockResolvedValue('age-11-13');
+    render(<App />);
+    expect(await screen.findByRole('heading', { name: 'Pausa ativa' })).toBeInTheDocument();
+    expect(screen.getByText(/EF05MA20/)).toBeInTheDocument();
+    fireEvent.click(screen.getByRole('button', { name: 'Começar a pausa' }));
+    expect(lastSavedState()).toMatchObject({ status: 'break' });
+    expect(await screen.findByRole('heading', { name: 'Pausa ativa em andamento' })).toBeInTheDocument();
+    expect(screen.getByRole('progressbar', { name: 'Progresso da pausa' })).toBeInTheDocument();
+  });
+
+  it('11–13: locks the PIN for 30 seconds after 3 wrong attempts', async () => {
+    const { hashPin } = await import('../wellbeing/core');
+    useWellbeingRecord({}, { pinSalt: 'sal', pinHash: await hashPin('4821', 'sal') });
+    dbMock.loadAgeProfile.mockResolvedValue('age-11-13');
+    render(<App />);
+    fireEvent.click(await screen.findByRole('button', { name: 'Progresso' }));
+    fireEvent.click(screen.getByRole('button', { name: 'Abrir área dos adultos' }));
+    holdGate();
+    for (let i = 0; i < 3; i += 1) {
+      fireEvent.change(screen.getByLabelText('Digite o PIN dos adultos'), { target: { value: '1111' } });
+      fireEvent.click(screen.getByRole('button', { name: 'Entrar' }));
+      await screen.findByRole('alert');
+    }
+    expect(await screen.findByText(/Aguarde 30 segundos/)).toBeInTheDocument();
+    expect(screen.getByLabelText('Digite o PIN dos adultos')).toBeDisabled();
+  });
+
+  it('11–13: the right PIN opens the screen-time settings', async () => {
+    const { hashPin } = await import('../wellbeing/core');
+    useWellbeingRecord({}, { pinSalt: 'sal', pinHash: await hashPin('4821', 'sal') });
+    dbMock.loadAgeProfile.mockResolvedValue('age-11-13');
+    render(<App />);
+    fireEvent.click(await screen.findByRole('button', { name: 'Progresso' }));
+    fireEvent.click(screen.getByRole('button', { name: 'Abrir área dos adultos' }));
+    holdGate();
+    fireEvent.change(screen.getByLabelText('Digite o PIN dos adultos'), { target: { value: '4821' } });
+    fireEvent.click(screen.getByRole('button', { name: 'Entrar' }));
+    expect(await screen.findByRole('heading', { name: 'Pausa saudável' })).toBeInTheDocument();
+    expect(within(screen.getByRole('radiogroup', { name: 'Tempo de uso por rodada' })).getByRole('radio', { name: '30 min', checked: true })).toBeInTheDocument();
+    fireEvent.click(screen.getByRole('button', { name: 'Pausar no próximo ponto de parada' }));
+    expect(lastSavedState().activeSec).toBe(30 * 60);
   });
 });

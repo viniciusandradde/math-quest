@@ -11,6 +11,7 @@
     "typecheck": "tsc -b --pretty",
     "test": "vitest run",
     "test:watch": "vitest",
+    "lint:text": "node scripts/lint-text.mjs",
     "verify:pwa": "node scripts/verify-pwa.mjs"
   },
   "dependencies": {

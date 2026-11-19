@@ -11,7 +11,9 @@ Este documento registra os princípios de privacidade para o MVP. Não substitui
   - diagnóstico: alternativa escolhida por questão e data;
   - desafios estratégicos: identificador do desafio, acerto, valor numérico respondido e data;
   - memória matemática: número de tentativas e pares de cada partida concluída e data;
-  - brincadeiras de 3 a 6 anos: brincadeira, nível, se acertou de primeira, número de tentativas e data.
+  - brincadeiras de 3 a 6 anos: brincadeira, nível, se acertou de primeira, número de tentativas e data;
+  - pausa saudável, por perfil: configuração escolhida pelo adulto (tempos, rodadas, janela de horários), estado da rodada (segundos de uso, início da pausa, missões recentes, rodadas do dia) e um histórico de até 14 dias com minutos, rodadas e identificadores das missões.
+- O PIN dos adultos (perfil de 11 a 13 anos) é guardado só como hash SHA-256 com sal aleatório, nunca em texto puro, e não sai do aparelho.
 - O professor de voz usa a síntese de voz do próprio aparelho; nenhum texto ou áudio é enviado a servidores.
 - Não armazena respostas em texto livre: só o valor numérico, para evitar que nomes ou outros dados digitados pela criança sejam guardados.
 - Não solicita localização, contatos, câmera ou microfone.
@@ -20,6 +22,8 @@ Este documento registra os princípios de privacidade para o MVP. Não substitui
 
 ## Riscos conhecidos
 - Pessoas com acesso ao mesmo dispositivo podem visualizar o progresso local.
+- O portão dos adultos reduz o acesso acidental, mas não é um controle de segurança forte: no perfil de 11 a 13 anos, quem cria o PIN primeiro fica com ele, e o PIN de 4 números pode ser descoberto por tentativa (o app bloqueia 30 s a cada 3 erros). Recomenda-se que o adulto crie o PIN logo na primeira abertura.
+- Esquecer o PIN exige apagar os dados do site, o que também apaga o progresso.
 - Limpar dados do navegador pode apagar o histórico.
 - O cache offline pode manter recursos até ser atualizado ou removido.
 - A publicação do código no GitHub Pages torna os arquivos frontend acessíveis publicamente.

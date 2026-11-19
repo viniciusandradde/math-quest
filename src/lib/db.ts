@@ -5,6 +5,7 @@ import { summarizeChallengeAttempts, type ChallengeAttempt, type ChallengeSummar
 import { summarizeMemorySessions, type MemorySessionResult, type MemorySummary } from '../learning/memory';
 import { summarizeEarlyAttempts, type EarlyAttempt, type EarlySummary } from '../learning/early';
 import { isAgeProfileId, type AgeProfileId } from '../learning/profiles';
+import { createState, DEFAULT_CONFIG, normalize, type WellbeingConfig, type WellbeingState } from '../wellbeing/core';
 
 export type ProgressRecord = {
   id: string;
@@ -18,6 +19,8 @@ export type MemorySessionRecord = MemorySessionResult & { id?: number };
 export type EarlyAttemptRecord = EarlyAttempt & { id?: number };
 /** Configurações do aparelho. Hoje guarda só a faixa de idade escolhida. */
 export type SettingRecord = { id: string; value: string };
+/** Pausa saudável por perfil: configuração dos adultos e estado da rodada (somente no aparelho). */
+export type WellbeingRecord = { profile: AgeProfileId; config: WellbeingConfig; state: WellbeingState };
 
 export type ProgressSummary = { factsSeen: number; attempts: number; correct: number; accuracy: number };
 
@@ -35,6 +38,7 @@ export class MathQuestDatabase extends Dexie {
   memorySessions!: Table<MemorySessionRecord, number>;
   earlyAttempts!: Table<EarlyAttemptRecord, number>;
   settings!: Table<SettingRecord, string>;
+  wellbeing!: Table<WellbeingRecord, AgeProfileId>;
   constructor(name = 'math-quest') {
     super(name);
     this.version(1).stores({ progress: 'id, lastSeenAt' });
@@ -52,6 +56,15 @@ export class MathQuestDatabase extends Dexie {
       memorySessions: '++id, completedAt',
       earlyAttempts: '++id, activity, answeredAt',
       settings: 'id'
+    });
+    this.version(5).stores({
+      progress: 'id, lastSeenAt',
+      assessments: 'id, completedAt',
+      challengeAttempts: '++id, challengeId, answeredAt',
+      memorySessions: '++id, completedAt',
+      earlyAttempts: '++id, activity, answeredAt',
+      settings: 'id',
+      wellbeing: 'profile'
     });
   }
 }
@@ -121,4 +134,16 @@ export async function recordEarlyAttempt(attempt: EarlyAttempt) {
 
 export async function getEarlySummary(): Promise<EarlySummary> {
   return summarizeEarlyAttempts(await db.earlyAttempts.toArray());
+}
+
+/** Lê a pausa saudável do perfil (com padrões e ajuste de novo dia local). */
+export async function loadWellbeing(profile: AgeProfileId, now = Date.now()): Promise<WellbeingRecord> {
+  const stored = await db.wellbeing.get(profile);
+  const config = { ...DEFAULT_CONFIG[profile], ...(stored?.config ?? {}) };
+  const state = normalize(stored?.state ?? createState(now), config, now);
+  return { profile, config, state };
+}
+
+export async function saveWellbeing(record: WellbeingRecord) {
+  await db.wellbeing.put(record);
 }

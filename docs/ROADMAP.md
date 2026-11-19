@@ -41,10 +41,13 @@
 - [ ] Missões mais desafiadoras para 12 e 13 anos.
 - [ ] Perfil intermediário (7 a 10 anos).
 
-## 0.4.2 — Bem-estar digital (proposta)
+## 0.4.2 — Bem-estar digital
 - [x] Análise da Missão de Brincar do Tumba da Máscara e padrão VSA de bem-estar digital infantil.
-- [ ] Pausa saudável por perfil, janela de horários e missões do mundo real.
-- [ ] Área dos pais com portão por idade (conta de dois dígitos / PIN) e resumo do dia.
+- [x] Pausa saudável por perfil, janela de horários e missões do mundo real ligadas à BNCC.
+- [x] Área dos adultos com portão por idade (conta de dois dígitos / PIN), resumo da semana e "pausar/liberar/zerar".
+- [x] Verificador de linguagem no CI (`npm run lint:text`).
+- [ ] Teste com famílias: aceitação da missão, insistência e "toca aqui" com crianças reais.
+- [ ] Janela de horários diferente no fim de semana.
 - [ ] Núcleo `@vsa/wellbeing-core` compartilhado entre os apps.
 
 ## 0.5 — Aprendizagem adaptativa

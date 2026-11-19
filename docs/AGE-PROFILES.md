@@ -1,6 +1,6 @@
 # Perfis por faixa de idade
 
-Na primeira vez que o app é aberto, um adulto escolhe quem vai jogar. O app guarda **apenas a faixa de idade** neste aparelho (nunca data de nascimento ou nome) e abre a experiência correspondente. A troca fica na área de Progresso/Adultos, com confirmação em dois toques para evitar trocas acidentais. O progresso de cada perfil fica salvo separadamente.
+Na primeira vez que o app é aberto, um adulto escolhe quem vai jogar. O app guarda **apenas a faixa de idade** neste aparelho (nunca data de nascimento ou nome) e abre a experiência correspondente. A troca fica na área dos adultos, protegida pelo portão (segurar 3 s + conta ou PIN), com confirmação em dois toques. O progresso de cada perfil fica salvo separadamente.
 
 | Perfil | Faixa | Experiência |
 |---|---|---|
@@ -67,7 +67,29 @@ Estrelas = acertos de primeira. Errar nunca tira estrelas.
 - Tecnologia: síntese de voz do próprio aparelho (Web Speech API, pt-BR), sem enviar nada a servidores. A qualidade depende da voz instalada (no Android, a voz do Google em português do Brasil).
 - Evolução prevista: as frases são fixas e podem ser gravadas com uma voz profissional (por exemplo, ElevenLabs) e registradas com `registerVoiceClips`, que passa a tocar o áudio no lugar da voz sintética.
 
+## Pausa saudável e área dos adultos
+
+Segue o [Padrão VSA de Bem-Estar Digital Infantil](standards/CHILD-WELLBEING-STANDARD.md) (análise em [WELLBEING-ANALYSIS.md](WELLBEING-ANALYSIS.md)).
+
+| | Pequeno Explorador (3 a 6) | Explorador Estratégico (11 a 13) |
+|---|---|---|
+| Padrão | 15 min de uso, 15 de pausa, 2 rodadas por dia, das 8h às 19h | 30 min de uso, 10 de pausa, 3 rodadas por dia, das 7h às 21h |
+| Ponto de parada | Entre perguntas, ao jogar de novo e ao trocar de tela | Ao trocar de tela e 3 s depois de cada resposta |
+| Aviso (cerca de 3 min antes) | Falado pelo professor: "Mais uma rodada e vem uma missão especial" | Aviso discreto na tela |
+| Missão | Falada, com ilustração e a mão como botão: "toque na mão e vá" | Cartão "Pausa ativa" com matemática do mundo real e habilidade da BNCC |
+| Pausa | Sol atravessa o céu, sem números; tocar na tela gera no máximo 4 falas | Barra de progresso e minutos restantes |
+| Volta | "Toca aqui!" com confete | "Pausa concluída" |
+| Fim do dia / fora do horário | "Até amanhã!" / "Hora de descansar" | Resumo do dia / "Fora do horário" |
+| Portão dos adultos | Segurar 3 s + soma de dois números de 2 dígitos | Segurar 3 s + PIN de 4 números (criado no primeiro acesso após uma soma de 3 dígitos); bloqueio de 30 s após 3 erros |
+
+- O tempo só conta com a criança usando o app (app visível e fora da área dos adultos).
+- Se a criança não chega a um ponto de parada, a missão abre sozinha 2 min depois do limite (teto duro).
+- A pausa usa o relógio de parede salvo: fechar e abrir o app não reinicia nem pula a pausa.
+- O dia vira à meia-noite do fuso do aparelho.
+- Na área dos adultos: ligar/desligar, tempos, rodadas, janela de horários, "pausar no próximo ponto de parada", "liberar agora" (o robô diz "Combinado com o adulto. Vamos continuar!"), "zerar o dia", gráfico dos últimos 7 dias e a referência da SBP. A troca de perfil também fica ali.
+
 ## Dados
 - Tabela `settings`: `{ id: 'ageProfile', value: 'age-3-6' | 'age-11-13' }`.
 - Tabela `earlyAttempts`: brincadeira, nível, acerto de primeira, número de tentativas e horário.
+- Tabela `wellbeing` (uma linha por perfil): configuração da pausa saudável, estado da rodada e histórico de até 14 dias (minutos, rodadas e missões). O PIN fica só como hash com sal.
 - Nenhum dado sai do aparelho.

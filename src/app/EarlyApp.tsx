@@ -3,6 +3,11 @@ import { getEarlySummary, recordEarlyAttempt } from '../lib/db';
 import { summarizeEarlyAttempts, type EarlyActivityId, type EarlyAttempt, type EarlySummary } from '../learning/early';
 import { isSoundMuted, setSoundMuted, sfx } from '../lib/sound';
 import { stopVoice } from '../lib/voice';
+import { useWellbeing } from '../wellbeing/useWellbeing';
+import { lines } from '../wellbeing/missions';
+import ParentGate from '../wellbeing/ParentGate';
+import EarlyPause from '../wellbeing/EarlyPause';
+import WellbeingSettings from '../wellbeing/WellbeingSettings';
 import PwaStatus from '../components/PwaStatus';
 import Item from '../components/Item';
 import { IconFamily, IconHome, IconSoundOff, IconSoundOn } from '../components/Icons';
@@ -19,6 +24,12 @@ export default function EarlyApp({ onChangeProfile }: { onChangeProfile: () => v
   const [activity, setActivity] = useState<EarlyActivityId>('contar');
   const [summary, setSummary] = useState<EarlySummary>(() => summarizeEarlyAttempts([]));
   const [muted, setMuted] = useState(isSoundMuted);
+  // Área dos adultos: só abre depois do portão e volta a trancar ao sair dela.
+  const [adultOpen, setAdultOpen] = useState(false);
+  const [gateOpen, setGateOpen] = useState(false);
+  const [greeting, setGreeting] = useState<string[] | undefined>(undefined);
+  const wellbeing = useWellbeing({ profile: 'age-3-6', active: !adultOpen && !gateOpen });
+  const pausing = wellbeing.ready && wellbeing.screen !== 'play' && !adultOpen;
 
   async function refresh() {
     try { setSummary(await getEarlySummary()); }
@@ -26,13 +37,37 @@ export default function EarlyApp({ onChangeProfile }: { onChangeProfile: () => v
   }
   useEffect(() => { void refresh(); }, [screen]);
 
-  function go(next: EarlyScreen) {
-    stopVoice();
-    setScreen(next);
+  function scrollTop() {
     try { window.scrollTo({ top: 0, behavior: 'smooth' }); } catch { /* jsdom */ }
   }
 
-  function open(id: EarlyActivityId) { setActivity(id); go('activity'); }
+  function go(next: EarlyScreen) {
+    stopVoice();
+    if (next === 'progress' && !adultOpen) { setGateOpen(true); return; }
+    if (next !== 'progress') {
+      setAdultOpen(false);
+      // Ponto natural de parada: ao trocar de tela a missão pode aparecer (sem aviso falado aqui).
+      wellbeing.checkpoint({ warn: false });
+    }
+    setScreen(next);
+    scrollTop();
+  }
+
+  function passGate() {
+    setGateOpen(false);
+    setAdultOpen(true);
+    setScreen('progress');
+    scrollTop();
+  }
+
+  /** Entre perguntas: abre a missão quando o tempo acabou ou devolve o aviso único, falado pelo professor. */
+  function checkpointInActivity(): string | null {
+    const result = wellbeing.checkpoint();
+    if (result !== 'warned') return null;
+    return wellbeing.isLastRound ? lines.early.lastWarning : lines.early.warning[Math.floor(Math.random() * lines.early.warning.length)];
+  }
+
+  function open(id: EarlyActivityId) { setActivity(id); setGreeting(undefined); go('activity'); }
 
   function record(attempt: EarlyAttempt) {
     void recordEarlyAttempt(attempt).then(refresh, error => console.error('Falha ao salvar progresso local:', error));
@@ -69,15 +104,20 @@ export default function EarlyApp({ onChangeProfile }: { onChangeProfile: () => v
 
     <main className="mx-auto max-w-4xl px-4 pt-4 sm:px-6">
       <PwaStatus />
-      <div key={screen + (screen === 'activity' ? activity : '')} className="animate-pop">
-        {screen === 'home' && <EarlyHome summary={summary} onOpen={open} />}
-        {screen === 'activity' && <EarlyActivityScreen activityId={activity} level={level} onBack={() => go('home')} onAnswer={record} />}
-        {screen === 'progress' && <EarlyProgressScreen summary={summary} onBack={() => go('home')} onChangeProfile={onChangeProfile} />}
-      </div>
+      {pausing
+        ? <div className="animate-pop"><EarlyPause wellbeing={wellbeing} onAdults={() => { stopVoice(); setGateOpen(true); }} onResume={() => setScreen('home')} /></div>
+        : <div key={screen + (screen === 'activity' ? activity : '')} className="animate-pop">
+          {screen === 'home' && <EarlyHome summary={summary} onOpen={open} greeting={greeting} />}
+          {screen === 'activity' && <EarlyActivityScreen activityId={activity} level={level} onBack={() => go('home')} onAnswer={record} onCheckpoint={checkpointInActivity} />}
+          {screen === 'progress' && adultOpen && <EarlyProgressScreen summary={summary} onBack={() => go('home')} onChangeProfile={onChangeProfile}
+            wellbeing={<WellbeingSettings profile="age-3-6" wellbeing={wellbeing} onUnlocked={() => setGreeting([lines.early.unlock, 'Toque em uma brincadeira.'])} />} />}
+        </div>}
       <footer className="mt-8 text-center text-xs text-slate-500">Math Quest · Pequeno Explorador (3 a 6 anos) · VSA Tecnologia</footer>
     </main>
 
-    <nav aria-label="Navegação principal" className="fixed inset-x-0 bottom-0 z-40 border-t border-mq-cyan/15 bg-mq-night/90 pb-[env(safe-area-inset-bottom)] backdrop-blur-md">
+    {gateOpen && <ParentGate profile="age-3-6" wellbeing={wellbeing} onPass={passGate} onCancel={() => setGateOpen(false)} />}
+
+    {!pausing && <nav aria-label="Navegação principal" className="fixed inset-x-0 bottom-0 z-40 border-t border-mq-cyan/15 bg-mq-night/90 pb-[env(safe-area-inset-bottom)] backdrop-blur-md">
       <ul className="mx-auto grid max-w-md grid-cols-2">
         {tabs.map(({ id, label, Icon }) => {
           const active = screen === id || (id === 'home' && screen === 'activity');
@@ -89,6 +129,6 @@ export default function EarlyApp({ onChangeProfile }: { onChangeProfile: () => v
           </li>;
         })}
       </ul>
-    </nav>
+    </nav>}
   </div>;
 }

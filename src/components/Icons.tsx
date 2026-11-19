@@ -13,3 +13,5 @@ export const IconSoundOn = svg(<><path d="M4 9.5v5h3.5L12 19V5L7.5 9.5H4Z" /><pa
 export const IconSoundOff = svg(<><path d="M4 9.5v5h3.5L12 19V5L7.5 9.5H4Z" /><path d="m16 9.5 5 5M21 9.5l-5 5" /></>);
 export const IconBack = svg(<path d="M15 5l-7 7 7 7" />);
 export const IconLock = svg(<><rect x="5" y="11" width="14" height="9" rx="2" /><path d="M8 11V8a4 4 0 0 1 8 0v3" /></>);
+export const IconHand = svg(<><path d="M8 13V5.5a1.5 1.5 0 0 1 3 0V12" /><path d="M11 11.5v-7a1.5 1.5 0 0 1 3 0V12" /><path d="M14 11.5V6a1.5 1.5 0 0 1 3 0v8" /><path d="M17 10.5a1.5 1.5 0 0 1 3 0V15a7 7 0 0 1-7 7h-1.2a6 6 0 0 1-4.6-2.2L3.6 15.4a1.6 1.6 0 0 1 2.4-2.1L8 15" /></>);
+export const IconMoon = svg(<path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5Z" />);

@@ -19,11 +19,11 @@ const cardTone: Record<EarlyActivityId, string> = {
 
 const GREETING = ['Oi! Eu sou o Robô.', 'Vamos brincar com os números?', 'Toque em uma brincadeira.'];
 
-type Props = { summary: EarlySummary; onOpen: (activity: EarlyActivityId) => void };
+type Props = { summary: EarlySummary; onOpen: (activity: EarlyActivityId) => void; greeting?: string[] };
 
-export default function EarlyHome({ summary, onOpen }: Props) {
+export default function EarlyHome({ summary, onOpen, greeting = GREETING }: Props) {
   const voice = useVoiceTeacher();
-  useEffect(() => { voice.say(GREETING); }, [voice.say]);
+  useEffect(() => { voice.say(greeting); }, [voice.say]);
 
   return <div className="space-y-5 pb-4">
     <h1 className="sr-only">Pequeno Explorador: brincadeiras de 3 a 6 anos</h1>

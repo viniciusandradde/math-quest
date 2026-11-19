@@ -9,6 +9,8 @@ import {
   recordChallengeAttempt,
   getEarlySummary,
   loadAgeProfile,
+  loadWellbeing,
+  saveWellbeing,
   recordEarlyAttempt,
   saveAgeProfile,
   saveDiagnostic,
@@ -63,7 +65,7 @@ describe('local learning database', () => {
     expect(await upgraded.progress.get('6x9')).toMatchObject({ attempts: 3, correct: 2 });
     await upgraded.challengeAttempts.add({ challengeId: 'fraction-parts', correct: true, value: 39, answeredAt: '2026-11-19T10:00:00.000Z' });
     expect(await upgraded.challengeAttempts.count()).toBe(1);
-    expect(upgraded.verno).toBe(4);
+    expect(upgraded.verno).toBe(5);
     expect(await upgraded.settings.count()).toBe(0);
     upgraded.close();
     await Dexie.delete(name);
@@ -87,6 +89,16 @@ describe('local learning database', () => {
     expect(early).toMatchObject({ attempts: 2, firstTry: 1, stars: 1 });
     const overview = await getLearningOverview();
     expect(overview.challenges.attempts).toBe(0);
+  });
+
+  it('keeps the healthy-break settings and round state per profile', async () => {
+    const fresh = await loadWellbeing('age-3-6', new Date(2026, 10, 19, 10).getTime());
+    expect(fresh.config).toMatchObject({ enabled: true, sessionMin: 15, breakMin: 15, roundsPerDay: 2, windowStart: '08:00', windowEnd: '19:00' });
+    await saveWellbeing({ ...fresh, config: { ...fresh.config, sessionMin: 20 }, state: { ...fresh.state, activeSec: 120 } });
+    const again = await loadWellbeing('age-3-6', new Date(2026, 10, 19, 10, 5).getTime());
+    expect(again.config.sessionMin).toBe(20);
+    expect(again.state.activeSec).toBe(120);
+    expect((await loadWellbeing('age-11-13')).config.sessionMin).toBe(30);
   });
 });
 

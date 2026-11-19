@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, type ReactNode } from 'react';
 import { IconBack } from '../../components/Icons';
 import Item from '../../components/Item';
 import { Mascot } from '../../components/Mascot';
@@ -7,9 +7,9 @@ import { earlyActivities, MAX_EARLY_LEVEL, type EarlySummary } from '../../learn
 import { getVoiceSpeed, setVoiceSpeed, speakLines, type VoiceSpeed } from '../../lib/voice';
 import ActivityIcon from './ActivityIcon';
 
-type Props = { summary: EarlySummary; onBack: () => void; onChangeProfile: () => void };
+type Props = { summary: EarlySummary; onBack: () => void; onChangeProfile: () => void; wellbeing?: ReactNode };
 
-export default function EarlyProgressScreen({ summary, onBack, onChangeProfile }: Props) {
+export default function EarlyProgressScreen({ summary, onBack, onChangeProfile, wellbeing }: Props) {
   const [speed, setSpeed] = useState<VoiceSpeed>(getVoiceSpeed);
 
   function chooseSpeed(value: VoiceSpeed) {
@@ -56,6 +56,7 @@ export default function EarlyProgressScreen({ summary, onBack, onChangeProfile }
     </div>
     <p className="mt-2 text-xs text-slate-400">A voz usa o português do Brasil disponível no aparelho. Se não ouvir nada, confira o volume e a voz do sistema.</p>
 
+    {wellbeing}
     <ProfileSwitch current="age-3-6" onChange={onChangeProfile} />
   </section>;
 }

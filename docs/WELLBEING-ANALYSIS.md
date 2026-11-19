@@ -5,6 +5,8 @@
 > Arquivos lidos: `pwa/js/wellbeing.js` (460 linhas), `ANALISE.md` §3.2.5 e §3.2.7, `docs/MANUAL.md` §5, `docs/ARQUITETURA.md`, `CHANGELOG.md` 1.7–1.8, `tools/lint-text.js`, ganchos em `pwa/js/game.js`.
 >
 > O padrão para todas as aplicações está em [standards/CHILD-WELLBEING-STANDARD.md](standards/CHILD-WELLBEING-STANDARD.md).
+>
+> **Status:** proposta aprovada e **implementada no Math Quest** (pausa saudável, janela de horários, missões do mundo real, portão por perfil, painel dos adultos e verificador de linguagem no CI). Veja a seção 6 e o código em `src/wellbeing/`.
 
 ## 1. Resumo
 
@@ -174,23 +176,28 @@ As missões levam a habilidade do app para o ambiente da criança, além de movi
 
 ## 6. Plano de implementação no Math Quest
 
-| Etapa | Entrega | Teste |
-|---|---|---|
-| 1. Núcleo | `src/wellbeing/core.ts`: máquina de estados pura (`idle → warned → mission → break → return → idle/done`, mais `outside-hours`), com relógio injetável e data local | Unitários com relógio falso: aviso único, teto duro, pausa que não reinicia, virada do dia local, janela de horários |
-| 2. Conteúdo | `src/wellbeing/missions.ts`: missões por perfil, com categoria, energia, horário e habilidade da BNCC; regras de sorteio | Sem repetir as últimas 3; missões calmas à noite; cobertura por perfil |
-| 3. Persistência | Dexie v5: `wellbeingConfig` e `wellbeingState`, preservando a v4 | Migração e estado que sobrevive à recarga |
-| 4. Interface 3 a 6 | Missão com professor de voz, pausa com sol atravessando o céu, insistência limitada, "toca aqui" e "até amanhã", integrados ao fim da rodada no `EarlyApp` | Testing Library + Playwright com `page.clock` |
-| 5. Interface 11 a 13 | Cartão "Pausa ativa", aviso discreto, resumo do dia, integrados ao fim da missão e da memória no `ExplorerApp` | Idem |
-| 6. Área dos pais | Portão por perfil (conta de dois dígitos / PIN), painel de configurações, resumo, "pausar/liberar/zerar" | Fluxos de portão, PIN errado, "liberar" com frase neutra |
-| 7. Linguagem e docs | Verificador no CI, `PRIVACY.md`, `AGE-PROFILES.md`, README | CI barra regressões |
+| Etapa | Entrega | Teste | Status |
+|---|---|---|---|
+| 1. Núcleo | `src/wellbeing/core.ts`: máquina de estados pura (`idle → mission → break → return → idle/done`, mais `outside-hours`), com relógio injetável e data local | Unitários com relógio falso: aviso único, teto duro, pausa que não reinicia, virada do dia local, janela de horários | Feito |
+| 2. Conteúdo | `src/wellbeing/missions.ts`: 13 missões para 3 a 6 e 12 para 11 a 13, com categoria, energia e habilidade da BNCC; regras de sorteio | Sem repetir as últimas 3; missões calmas à noite; cobertura por perfil | Feito |
+| 3. Persistência | Dexie v5: tabela `wellbeing` (uma linha por perfil com configuração e estado), preservando a v4 | Migração e estado que sobrevive à recarga | Feito |
+| 4. Interface 3 a 6 | `EarlyPause.tsx`: missão com professor de voz, pausa com sol atravessando o céu, insistência limitada, "toca aqui" e "até amanhã"; ponto de parada entre perguntas | Testing Library + Playwright com `page.clock` | Feito |
+| 5. Interface 11 a 13 | `ExplorerPause.tsx`: cartão "Pausa ativa", aviso discreto, resumo do dia; ponto de parada na navegação e 3 s depois de cada resposta | Idem | Feito |
+| 6. Área dos pais | `ParentGate.tsx` e `WellbeingSettings.tsx`: portão por perfil (conta de dois dígitos / PIN), painel, resumo da semana, "pausar/liberar/zerar" | Fluxos de portão, PIN errado com bloqueio, "liberar" com frase neutra | Feito |
+| 7. Linguagem e docs | `npm run lint:text` no CI, `PRIVACY.md`, `AGE-PROFILES.md`, README | CI barra regressões | Feito |
 
-## 7. Decisões para o responsável pelo produto
+Diferenças em relação à proposta:
+- **Recuperação do PIN:** em vez de uma dica salva no aparelho (que a própria criança poderia ler), o caminho é apagar os dados do site no navegador, o que também apaga o progresso. O texto aparece na tela do PIN.
+- **Entrada pelas telas da pausa:** um botão discreto "Adultos" abre o mesmo portão (que já começa com segurar 3 s), em vez de um ícone de engrenagem.
+- **Liberar fora do horário:** "Liberar agora" encerra a pausa em andamento; fora da janela, o adulto ajusta os horários ou desliga a pausa saudável.
 
-1. **Padrões por perfil** (seção 5.2): 15/15/2 para 3 a 6 anos e 30/10/3 para 11 a 13 anos?
-2. **Janela de horários** padrão: 8h–19h e 7h–21h?
-3. **Portão:** conta de dois dígitos para 3 a 6 anos e PIN para 11 a 13 anos?
-4. **11 a 13 anos ligado por padrão** ou desligado?
-5. **Missões com personagens**: confirmar a troca de nomes de marca por termos genéricos.
+## 7. Decisões do responsável pelo produto (aprovadas)
+
+1. **Padrões por perfil:** 15/15/2 para 3 a 6 anos e 30/10/3 para 11 a 13 anos. ✔
+2. **Janela de horários** padrão: 8h–19h e 7h–21h. ✔
+3. **Portão:** conta de dois dígitos para 3 a 6 anos e PIN para 11 a 13 anos. ✔
+4. **11 a 13 anos ligado por padrão.** ✔
+5. **Missões com personagens:** nomes de marca trocados por termos genéricos (no Tumba: "Herói voador" e "Escudo do herói"). ✔
 
 ## Fontes
 

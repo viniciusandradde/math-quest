@@ -31,6 +31,8 @@ jobs:
         run: npm run typecheck
       - name: Unit tests
         run: npm run test
+      - name: Child-safe language lint (Padrão VSA de Bem-Estar)
+        run: npm run lint:text
       - name: Production build
         run: npm run build
       - name: Verify installable PWA bundle

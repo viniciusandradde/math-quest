@@ -32,13 +32,14 @@
 3. [Metodologia de aprendizagem](#metodologia-de-aprendizagem)
 4. [Alinhamento com a BNCC](#alinhamento-com-a-bncc)
 5. [Avaliação, evidências e recompensas](#avaliação-evidências-e-recompensas)
-6. [Acessibilidade e inclusão](#acessibilidade-e-inclusão)
-7. [Identidade visual](#identidade-visual)
-8. [Privacidade e proteção de crianças](#privacidade-e-proteção-de-crianças)
-9. [Tecnologia](#tecnologia)
-10. [Executar, testar e publicar](#executar-testar-e-publicar)
-11. [Estrutura e documentação](#estrutura-do-repositório)
-12. [Roadmap](#roadmap) · [Governança](#governança-do-projeto) · [Licença](#licença-e-propriedade-intelectual)
+6. [Pausa saudável e área dos adultos](#pausa-saudável-e-área-dos-adultos)
+7. [Acessibilidade e inclusão](#acessibilidade-e-inclusão)
+8. [Identidade visual](#identidade-visual)
+9. [Privacidade e proteção de crianças](#privacidade-e-proteção-de-crianças)
+10. [Tecnologia](#tecnologia)
+11. [Executar, testar e publicar](#executar-testar-e-publicar)
+12. [Estrutura e documentação](#estrutura-do-repositório)
+13. [Roadmap](#roadmap) · [Governança](#governança-do-projeto) · [Licença](#licença-e-propriedade-intelectual)
 
 ## Sobre o Math Quest
 
@@ -61,7 +62,7 @@ Não é apenas um quiz. O objetivo é que a criança:
 
 ## Perfis por idade
 
-Na primeira abertura, um adulto escolhe quem vai jogar. **Só a faixa de idade fica salva no aparelho** (nunca nome ou data de nascimento). A troca fica na área de Progresso/Adultos, com confirmação em dois toques, e cada perfil mantém o próprio progresso.
+Na primeira abertura, um adulto escolhe quem vai jogar. **Só a faixa de idade fica salva no aparelho** (nunca nome ou data de nascimento). A troca fica na área dos adultos, protegida pelo portão (veja [Pausa saudável e área dos adultos](#pausa-saudável-e-área-dos-adultos)), e cada perfil mantém o próprio progresso.
 
 | | Pequeno Explorador | Explorador Estratégico |
 |---|---|---|
@@ -206,7 +207,26 @@ As atividades se relacionam às **unidades temáticas** Números, Álgebra, Geom
 - **Dimensões de domínio:** compreensão, precisão, fluência, retenção e transferência. Velocidade isolada nunca é prova de domínio.
 - **Recompensas ligadas à aprendizagem:** XP vem de acertos e conclusões; cada um dos 10 itens do brand board é ganho com uma evidência (primeiro acerto, missões resolvidas, partidas da memória, diagnóstico). **Errar nunca tira pontos.**
 - **Sem comparação:** não há rankings, sequências diárias obrigatórias nem pressão por tempo de tela.
-- **Papel do adulto:** a área de Progresso/Adultos mostra o resumo por atividade e permite ajustar a voz e trocar o perfil.
+- **Papel do adulto:** a área dos adultos mostra o resumo por atividade e permite ajustar a voz, a pausa saudável e trocar o perfil.
+
+## Pausa saudável e área dos adultos
+
+O Math Quest segue o [Padrão VSA de Bem-Estar Digital Infantil](docs/standards/CHILD-WELLBEING-STANDARD.md), criado a partir da Missão de Brincar do Tumba da Máscara ([análise](docs/WELLBEING-ANALYSIS.md)). Princípio: **o app avisa e convida; o adulto decide e conduz.**
+
+| | Pequeno Explorador (3 a 6) | Explorador Estratégico (11 a 13) |
+|---|---|---|
+| Padrão (ajustável) | 15 min de uso · 15 min de pausa · 2 rodadas por dia · das 8h às 19h | 30 min de uso · 10 min de pausa · 3 rodadas por dia · das 7h às 21h |
+| Aviso | Um só, falado pelo professor, cerca de 3 min antes | Um só, discreto na tela, cerca de 3 min antes |
+| Missão fora da tela | Falada, com a mão como botão: "toque na mão e vá" (contar brinquedos, caçar formas pela casa, pular contando, água, história) | Cartão "Pausa ativa" com matemática do mundo real (área do quarto, frações na cozinha, desconto, estimativa) e cuidado com o corpo |
+| Pausa | Sol atravessando o céu, sem números; tocar na tela gera no máximo 4 falas | Barra de progresso e minutos restantes |
+| Volta e fim do dia | "Toca aqui!" e "Até amanhã!" | "Pausa concluída" e resumo do dia |
+| Portão dos adultos | Segurar 3 s + soma de dois números de 2 dígitos | Segurar 3 s + PIN de 4 números, com bloqueio de 30 s após 3 erros |
+
+- A pausa só aparece em **pontos naturais de parada** (entre perguntas, ao trocar de tela, depois de uma resposta), nunca no meio de uma pergunta. Se a criança não chega a um, a missão abre 2 min depois do limite.
+- O tempo só conta com o app em uso, e a pausa não reinicia nem pula ao fechar e abrir o app. O dia vira à meia-noite do fuso do aparelho.
+- Na área dos adultos: ligar/desligar, tempos, rodadas, janela de horários, "pausar no próximo ponto de parada", "liberar agora" (frase neutra, sem julgamento), "zerar o dia", gráfico dos últimos 7 dias e a referência da Sociedade Brasileira de Pediatria.
+- 25 missões (13 + 12) com habilidade da BNCC nas de matemática; sorteio sem repetir as 3 últimas e só missões calmas à noite.
+- Linguagem verificada no CI (`npm run lint:text`): sem violência, culpa, "mamãe ou papai" ou personagens licenciados.
 
 ## Acessibilidade e inclusão
 
@@ -240,6 +260,7 @@ O produto é destinado a crianças e pré-adolescentes; privacidade e segurança
 - Sem cadastro: pergunta só a **faixa de idade**, guardada no aparelho.
 - Todo o progresso fica no IndexedDB do aparelho; nada é enviado a servidores.
 - O professor de voz usa a síntese do próprio aparelho.
+- A pausa saudável guarda só tempos, rodadas e missões, no aparelho; o PIN dos adultos fica como hash com sal.
 - Respostas digitadas guardam só o valor numérico, nunca texto livre.
 - Sem publicidade, rankings públicos, localização, contatos, câmera ou microfone.
 - Antes de qualquer operação com contas ou nuvem: avaliar a LGPD (melhor interesse e consentimento aplicáveis a crianças e adolescentes) e publicar política de privacidade, retenção e exclusão.
@@ -277,12 +298,13 @@ npm install
 npm run dev        # desenvolvimento (http://localhost:5173/math-quest/)
 npm run typecheck  # verificação TypeScript
 npm run test       # testes automatizados
+npm run lint:text  # linguagem segura para crianças (Padrão VSA)
 npm run build      # build de produção
 npm run verify:pwa # confere manifest, service worker e arquivos essenciais
 npm run preview    # visualizar o build local
 ~~~
 
-**Publicação:** o workflow [.github/workflows/deploy.yml](.github/workflows/deploy.yml) roda typecheck, testes, build e verificação do PWA em cada pull request e publica no GitHub Pages a cada push na `main` (Settings → Pages → Source: GitHub Actions). Endereço: **https://viniciusandradde.github.io/math-quest/**. Com o repositório privado, o GitHub Pages exige plano pago.
+**Publicação:** o workflow [.github/workflows/deploy.yml](.github/workflows/deploy.yml) roda typecheck, testes, verificação de linguagem, build e verificação do PWA em cada pull request e publica no GitHub Pages a cada push na `main` (Settings → Pages → Source: GitHub Actions). Endereço: **https://viniciusandradde.github.io/math-quest/**. Com o repositório privado, o GitHub Pages exige plano pago.
 
 **PWA beta 0.1.0-beta.1:** instalação, uso offline e atualização ainda precisam do teste real em Android previsto no [checklist de aceite](docs/PWA-BETA-ACCEPTANCE.md).
 
@@ -297,7 +319,7 @@ math-quest/
 │   ├── assets/kit/         # elementos do brand board usados no app
 │   ├── assets/printables/  # materiais para imprimir
 │   └── icons/              # ícones do PWA
-├── scripts/                # verificação do PWA e extração do kit visual
+├── scripts/                # verificação do PWA, lint de linguagem e extração do kit visual
 └── src/
     ├── app/                # porta de entrada por perfil, EarlyApp e ExplorerApp
     ├── components/         # mascote, professor de voz, itens, confete, ícones
@@ -310,8 +332,9 @@ math-quest/
     │   ├── learn/, lab/    # laboratório visual
     │   ├── practice/       # aquecimento
     │   ├── diagnostic/     # diagnóstico
-    │   └── parent/         # progresso e área dos adultos
+    │   └── parent/         # resumo de progresso (11 a 13)
     ├── learning/           # regras pedagógicas puras e testáveis
+    ├── wellbeing/          # pausa saudável: núcleo, missões, portão, telas e painel dos adultos
     ├── lib/                # banco local, voz e sons
     └── styles/             # tokens da marca e animações
 ~~~
@@ -328,7 +351,7 @@ math-quest/
 | [docs/BRAND.md](docs/BRAND.md) | Identidade visual, mascote e recompensas |
 | [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) · [ADRs](docs/DECISIONS/) | Arquitetura e decisões |
 | [docs/PRIVACY.md](docs/PRIVACY.md) | Privacidade e proteção de crianças |
-| [docs/WELLBEING-ANALYSIS.md](docs/WELLBEING-ANALYSIS.md) | Análise da Missão de Brincar (Tumba da Máscara) e proposta de área dos pais |
+| [docs/WELLBEING-ANALYSIS.md](docs/WELLBEING-ANALYSIS.md) | Análise da Missão de Brincar (Tumba da Máscara), proposta e status da implementação |
 | [docs/standards/CHILD-WELLBEING-STANDARD.md](docs/standards/CHILD-WELLBEING-STANDARD.md) | Padrão VSA de bem-estar digital infantil para todas as aplicações |
 | [docs/PWA-BETA-ACCEPTANCE.md](docs/PWA-BETA-ACCEPTANCE.md) | Aceite técnico do PWA |
 | [docs/SCRATCH-LAB.md](docs/SCRATCH-LAB.md) | Ponte futura para programação em blocos |
@@ -343,6 +366,7 @@ math-quest/
 - [x] Registro local das tentativas e resumo para responsáveis.
 - [x] Identidade visual do brand board, XP, nível e coleção de itens.
 - [x] Perfis por idade: 3 a 6 anos (com professor de voz) e 11 a 13 anos.
+- [x] Pausa saudável, janela de horários, missões do mundo real e área dos adultos com portão.
 - [ ] Vozes gravadas com voz profissional para o professor de voz.
 - [ ] Missões mais desafiadoras para 12 e 13 anos e perfil de 7 a 10 anos.
 - [ ] Tabuadas adaptativas e revisão espaçada com avaliação de retenção.

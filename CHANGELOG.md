@@ -1,6 +1,13 @@
 # Changelog
 
 ## Não publicado
+- Pausa saudável (Padrão VSA de Bem-Estar Digital Infantil): depois do tempo combinado, no próximo ponto de parada, o app propõe uma missão fora da tela. 3 a 6 anos: missão falada pelo professor de voz, "toque na mão e vá", sol atravessando o céu sem números, no máximo 4 falas de insistência, "toca aqui" na volta e "Até amanhã" depois das rodadas do dia. 11 a 13 anos: aviso discreto, cartão "Pausa ativa" com matemática do mundo real e resumo do dia.
+- Padrões aprovados: 15 min de uso, 15 de pausa e 2 rodadas (3 a 6 anos, das 8h às 19h); 30, 10 e 3 (11 a 13 anos, das 7h às 21h, ligado por padrão). Teto de 2 min além do limite e data sempre no fuso local.
+- 25 missões fora da tela (13 + 12), com habilidade da BNCC nas de matemática, sorteio sem repetir as 3 últimas e só missões calmas à noite.
+- Área dos adultos protegida: segurar 3 s + conta de dois dígitos (3 a 6) ou PIN de 4 números guardado como hash com sal, com bloqueio de 30 s após 3 erros (11 a 13). A troca de perfil passou para dentro dela.
+- Painel "Pausa saudável": ligar/desligar, tempo de uso, pausa, rodadas, janela de horários, pausar no próximo ponto de parada, liberar (frase neutra), zerar o dia, gráfico dos últimos 7 dias e referência da SBP.
+- Banco local schema v5 (tabela `wellbeing` por perfil), preservando os dados anteriores.
+- Verificador de linguagem `npm run lint:text` no CI (violência, culpa, "mamãe ou papai" e marcas licenciadas).
 - Pequeno Explorador ampliado: 4 brincadeiras novas (Qual é diferente?, Grande e pequeno, Antes e depois, Tirar) e 7 níveis por brincadeira, com novas formas (oval, losango, estrela), tamanho como atributo, 3 grupos para comparar, padrões AABB, figura faltando no meio e números até 20.
 - README reescrito com a metodologia completa: referências e onde aparecem, ciclo pedagógico, princípios para 3 a 6 e 11 a 13 anos, professor de voz, avaliação e recompensas, acessibilidade e alinhamento com a BNCC (Educação Infantil e Matemática do Ensino Fundamental).
 - Perfis por idade: na primeira abertura o adulto escolhe 3 a 6 ou 11 a 13 anos; só a faixa fica salva e a troca exige confirmação.

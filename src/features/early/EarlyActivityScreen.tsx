@@ -17,6 +17,11 @@ type Props = {
   level: EarlyLevel;
   onBack: () => void;
   onAnswer: (attempt: EarlyAttempt) => void;
+  /**
+   * Ponto natural de parada (entre perguntas e ao jogar de novo) para a pausa saudável.
+   * Pode devolver um aviso curto, que o professor fala antes do próximo pedido.
+   */
+  onCheckpoint?: () => string | null;
   /** Permite rodadas determinísticas nos testes. */
   random?: () => number;
 };
@@ -60,7 +65,7 @@ function ItemGrid({ item, count, offset = 0, counted, highlight, onTap, size, fa
   </div>;
 }
 
-export default function EarlyActivityScreen({ activityId, level, onBack, onAnswer, random = Math.random }: Props) {
+export default function EarlyActivityScreen({ activityId, level, onBack, onAnswer, onCheckpoint, random = Math.random }: Props) {
   const activity = earlyActivities.find(item => item.id === activityId)!;
   const [round, setRound] = useState<EarlyQuestion[]>(() => buildEarlyRound(activityId, level, random));
   const [index, setIndex] = useState(0);
@@ -73,6 +78,7 @@ export default function EarlyActivityScreen({ activityId, level, onBack, onAnswe
   const [mood, setMood] = useState<Expression>('feliz');
   const voice = useVoiceTeacher();
   const introduced = useRef(false);
+  const notice = useRef<string | null>(null);
   const question = round[index];
   const finished = index >= round.length;
   const stars = results.filter(Boolean).length;
@@ -81,13 +87,15 @@ export default function EarlyActivityScreen({ activityId, level, onBack, onAnswe
 
   // Explica a brincadeira na primeira pergunta; depois, só o pedido.
   useEffect(() => {
+    const before = notice.current ? [notice.current] : [];
+    notice.current = null;
     if (finished) {
-      voice.say(['Você terminou!', stars === 1 ? 'Ganhou uma estrela.' : stars > 1 ? 'Ganhou ' + stars + ' estrelas.' : 'Você treinou muito bem.', 'Parabéns!']);
+      voice.say(['Você terminou!', stars === 1 ? 'Ganhou uma estrela.' : stars > 1 ? 'Ganhou ' + stars + ' estrelas.' : 'Você treinou muito bem.', 'Parabéns!', ...before]);
       return;
     }
     const lines = introduced.current ? [question.prompt] : [...activity.intro, question.prompt];
     introduced.current = true;
-    voice.say(lines);
+    voice.say([...before, ...lines]);
   }, [index, round]);
 
   function sayWithCountHighlight(lines: string[]) {
@@ -129,6 +137,7 @@ export default function EarlyActivityScreen({ activityId, level, onBack, onAnswe
 
   function next() {
     sfx.tap();
+    notice.current = onCheckpoint?.() ?? null;
     setIndex(value => value + 1);
     setWrong([]);
     setSolved(false);
@@ -139,6 +148,7 @@ export default function EarlyActivityScreen({ activityId, level, onBack, onAnswe
 
   function playAgain() {
     introduced.current = true;
+    notice.current = onCheckpoint?.() ?? null;
     setRound(buildEarlyRound(activityId, level, random));
     setIndex(0); setResults([]); setWrong([]); setSolved(false); setCounted(new Map()); setMood('feliz');
   }

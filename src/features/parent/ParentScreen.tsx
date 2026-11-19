@@ -1,12 +1,11 @@
-import { IconBack } from '../../components/Icons';
+import { IconBack, IconLock } from '../../components/Icons';
 import Item from '../../components/Item';
 import { Mascot } from '../../components/Mascot';
-import ProfileSwitch from '../../components/ProfileSwitch';
 import type { ChallengeStatus } from '../../learning/challenges';
 import type { CollectibleItem, LevelInfo } from '../../learning/rewards';
 import type { LearningOverview } from '../../lib/db';
 
-type Props = { overview: LearningOverview; level: LevelInfo; collection: CollectibleItem[]; onBack: () => void; onChangeProfile?: () => void };
+type Props = { overview: LearningOverview; level: LevelInfo; collection: CollectibleItem[]; onBack: () => void; onOpenAdultArea?: () => void };
 
 const statusLabel: Record<ChallengeStatus, string> = {
   solved: 'Resolvido',
@@ -28,7 +27,7 @@ function Tile({ icon, label, value }: { icon: string; label: string; value: stri
   </div>;
 }
 
-export default function ParentScreen({ overview, level, collection, onBack, onChangeProfile }: Props) {
+export default function ParentScreen({ overview, level, collection, onBack, onOpenAdultArea }: Props) {
   const { challenges, memory, multiplication } = overview;
   return <section className="mq-panel p-5 sm:p-8">
     <button onClick={onBack} className="btn btn-ghost px-3 py-2 text-sm"><IconBack className="h-4 w-4" /> Início</button>
@@ -88,6 +87,13 @@ export default function ParentScreen({ overview, level, collection, onBack, onCh
         <span className={'text-xs font-bold ' + (item.unlocked ? 'text-[#7dff84]' : 'text-slate-400')}>{item.unlocked ? 'Conquistado' : 'Bloqueado'}</span>
       </li>)}
     </ul>
-    {onChangeProfile && <ProfileSwitch current="age-11-13" onChange={onChangeProfile} />}
+    {onOpenAdultArea && <div className="mq-card mt-8 flex flex-wrap items-center gap-3 p-4">
+      <IconLock className="h-8 w-8 shrink-0 text-mq-cyan" />
+      <div className="min-w-0 flex-1">
+        <p className="font-bold text-white">Área dos adultos</p>
+        <p className="text-sm text-slate-300">Tempo de tela, pausas, horários e perfil de idade. Protegida por PIN.</p>
+      </div>
+      <button type="button" onClick={onOpenAdultArea} className="btn btn-ghost text-sm">Abrir área dos adultos</button>
+    </div>}
   </section>;
 }
