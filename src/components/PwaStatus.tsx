@@ -57,7 +57,7 @@ export default function PwaStatus() {
     <span role="status" className={'rounded-full border px-3 py-2 font-semibold ' + (online ? 'border-cyan-300/20 bg-cyan-300/10 text-cyan-100' : 'border-orange-300/30 bg-orange-300/10 text-orange-100')}>
       {online ? '● Conectado' : '● Sem internet · recursos já carregados podem funcionar'}
     </span>
-    <span className="rounded-full border border-white/10 px-3 py-2 text-slate-300">Versão 0.1.0-beta</span>
+    <span className="rounded-full border border-white/10 px-3 py-2 text-slate-300">Versão 0.1.0-beta.1</span>
     {installed && <span className="rounded-full border border-emerald-300/20 px-3 py-2 text-emerald-200">Instalado</span>}
     {installEvent && !installed && <button type="button" onClick={() => void install()} className="rounded-full bg-cyan-300 px-3 py-2 font-bold text-slate-950">Instalar aplicativo</button>}
     {updateAvailable && <button type="button" onClick={() => { if (updateSW) void updateSW(true); }} className="rounded-full bg-orange-400 px-3 py-2 font-bold text-slate-950">Atualizar aplicativo</button>}
