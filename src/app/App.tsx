@@ -3,9 +3,10 @@ import { buildChoices, buildFact } from '../learning/multiplication';
 import { getProgressSummary, recordAnswer, saveDiagnostic } from '../lib/db';
 import DiagnosticScreen from '../features/diagnostic/DiagnosticScreen';
 import ArrayLab from '../features/lab/ArrayLab';
+import ChallengeScreen from '../features/challenges/ChallengeScreen';
 import type { DiagnosticResult } from '../learning/diagnostic';
 
-type Screen = 'home' | 'diagnostic' | 'practice' | 'learn' | 'parent';
+type Screen = 'home' | 'diagnostic' | 'practice' | 'learn' | 'parent' | 'challenges';
 const logo = import.meta.env.BASE_URL + 'brand/math-quest-logo.svg';
 
 export default function App() {
@@ -44,18 +45,18 @@ export default function App() {
           <img src={logo} className="h-12 w-12 object-contain" alt="" />
           <span><strong className="block text-lg tracking-wide">MATH QUEST</strong><small className="text-slate-400">Aprender é uma aventura</small></span>
         </button>
-        <span className="rounded-full border border-cyan-300/20 bg-cyan-300/10 px-3 py-1 text-xs text-cyan-200">MISSÃO 01 · TABUADA</span>
+        <span className="rounded-full border border-cyan-300/20 bg-cyan-300/10 px-3 py-1 text-xs text-cyan-200">MISSÕES · NÍVEL 5º ANO</span>
       </header>
 
       {screen === 'home' && <section className="mt-8 grid gap-6 md:grid-cols-[1.15fr_.85fr]">
         <div className="relative overflow-hidden rounded-3xl border border-blue-300/15 bg-gradient-to-br from-[#12365b] to-[#10213a] p-6 shadow-2xl sm:p-9" style={{ backgroundImage: `linear-gradient(115deg, rgba(7,20,38,.94), rgba(16,34,58,.82)), url("${import.meta.env.BASE_URL}assets/environments/math-lab.svg")`, backgroundSize: "cover", backgroundPosition: "center" }}>
           <p className="text-sm font-bold uppercase tracking-[.2em] text-cyan-300">Bem-vindo, explorador</p>
-          <h1 className="mt-3 max-w-xl text-4xl font-black leading-tight sm:text-5xl">Sua próxima descoberta começa com <span className="text-orange-400">multiplicação.</span></h1>
-          <p className="mt-4 max-w-lg text-slate-300">Explore padrões, resolva enigmas e ajude nosso robô a recuperar a energia do laboratório.</p>
+          <h1 className="mt-3 max-w-xl text-4xl font-black leading-tight sm:text-5xl">Sua próxima descoberta começa com <span className="text-orange-400">uma boa estratégia.</span></h1>
+          <p className="mt-4 max-w-lg text-slate-300">Resolva problemas em várias etapas, use frações, decimais, geometria e lógica para recuperar o laboratório.</p>
           <div className="mt-7 flex flex-wrap gap-3">
             <button onClick={() => setScreen('diagnostic')} className="rounded-xl border border-cyan-300/30 px-5 py-3 font-bold text-cyan-100 hover:bg-cyan-300/10">Fazer diagnóstico</button>
-            <button onClick={() => setScreen('practice')} className="rounded-xl bg-orange-400 px-5 py-3 font-extrabold text-slate-950 shadow-lg shadow-orange-950/30 hover:bg-orange-300">Começar missão →</button>
-            <button onClick={() => setScreen('learn')} className="rounded-xl border border-white/20 px-5 py-3 font-bold text-white hover:bg-white/10">Explorar multiplicação</button>
+            <button onClick={() => setScreen('challenges')} className="rounded-xl bg-orange-400 px-5 py-3 font-extrabold text-slate-950 shadow-lg shadow-orange-950/30 hover:bg-orange-300">Iniciar missão estratégica →</button>
+            <button onClick={() => setScreen('learn')} className="rounded-xl border border-white/20 px-5 py-3 font-bold text-white hover:bg-white/10">Laboratório visual</button>
           </div>
           <div className="mt-8 grid grid-cols-3 gap-2">
             {['Descobrir','Praticar','Conquistar'].map((label, i) => <div key={label} className="rounded-xl bg-slate-950/30 p-3"><span className="text-xs text-cyan-300">0{i+1}</span><p className="mt-1 text-sm font-bold">{label}</p></div>)}
@@ -77,14 +78,15 @@ export default function App() {
 
       {screen === 'home' && <section className="mt-6 rounded-3xl border border-white/10 bg-[#0d1c30] p-5 sm:p-7">
         <div className="flex flex-wrap items-end justify-between gap-3">
-          <div><p className="text-xs font-bold uppercase tracking-[.2em] text-cyan-300">Fora da tela também se aprende</p><h2 className="mt-2 text-2xl font-black">Caderno de missões para imprimir</h2><p className="mt-2 text-sm text-slate-400">Atividades para desenhar, manipular, explicar e resolver no papel.</p></div>
-          <span className="rounded-full border border-orange-300/30 bg-orange-300/10 px-3 py-1 text-xs font-bold text-orange-200">3 atividades</span>
+          <div><p className="text-xs font-bold uppercase tracking-[.2em] text-cyan-300">Desafios de raciocínio</p><h2 className="mt-2 text-2xl font-black">Missões para pensar de verdade</h2><p className="mt-2 text-sm text-slate-400">Problemas com várias etapas, frações, decimais, geometria e lógica. Resolva no papel e explique sua estratégia.</p></div>
+          <span className="rounded-full border border-orange-300/30 bg-orange-300/10 px-3 py-1 text-xs font-bold text-orange-200">5º ano · extensão</span>
         </div>
-        <div className="mt-5 grid gap-3 sm:grid-cols-3">
-          {[{n:'01',title:'Grupos iguais',desc:'Desenhar grupos e relacionar à adição repetida.',href:import.meta.env.BASE_URL+'assets/printables/mission-01-equal-groups.svg'},{n:'02',title:'Matrizes',desc:'Organizar linhas, colunas e observar padrões.',href:import.meta.env.BASE_URL+'assets/printables/mission-02-arrays.svg'},{n:'03',title:'Problemas de aventura',desc:'Resolver situações e criar um desafio próprio.',href:import.meta.env.BASE_URL+'assets/printables/mission-03-word-problems.svg'}].map(item=><a key={item.n} href={item.href} target="_blank" rel="noreferrer" className="rounded-2xl border border-white/10 bg-slate-950/30 p-4 transition hover:border-cyan-300/50"><span className="text-xs font-bold text-cyan-300">MISSÃO {item.n}</span><h3 className="mt-2 font-extrabold">{item.title}</h3><p className="mt-1 text-sm text-slate-400">{item.desc}</p><span className="mt-4 inline-block text-sm font-bold text-orange-300">Abrir para imprimir ↗</span></a>)}
+        <div className="mt-5 grid gap-3 sm:grid-cols-2">
+          {[{n:'04',title:'Operação Resgate',desc:'Operações combinadas, frações e situações com dinheiro.',href:import.meta.env.BASE_URL+'assets/printables/mission-04-strategy-level.svg'},{n:'05',title:'Geometria e lógica',desc:'Área, perímetro, sequências e frações aplicadas.',href:import.meta.env.BASE_URL+'assets/printables/mission-05-geometry-logic.svg'}].map(item=><a key={item.n} href={item.href} target="_blank" rel="noreferrer" className="rounded-2xl border border-white/10 bg-slate-950/30 p-4 transition hover:border-cyan-300/50"><span className="text-xs font-bold text-cyan-300">MISSÃO {item.n}</span><h3 className="mt-2 font-extrabold">{item.title}</h3><p className="mt-1 text-sm text-slate-400">{item.desc}</p><span className="mt-4 inline-block text-sm font-bold text-orange-300">Abrir atividade para imprimir ↗</span></a>)}
         </div>
-      </section>}
+      </section>
 
+      {screen === 'challenges' && <ChallengeScreen onBack={() => setScreen('home')} />}
       {screen === 'diagnostic' && <DiagnosticScreen onBack={() => setScreen('home')} onComplete={(result: DiagnosticResult) => { void saveDiagnostic(result); }} />}
       {screen === 'practice' && <section className="mx-auto mt-8 max-w-2xl rounded-3xl border border-white/10 bg-[#10223a] p-6 sm:p-9">
         <button onClick={() => setScreen('home')} className="text-sm text-cyan-300">← Voltar ao laboratório</button>
@@ -123,7 +125,7 @@ export default function App() {
       </section>}
 
       <nav className="mx-auto mt-8 flex max-w-xl justify-center gap-2 rounded-2xl border border-white/10 bg-[#0b1a2c] p-2">
-        {([['home','Início'],['diagnostic','Diagnóstico'],['practice','Jogar'],['learn','Aprender'],['parent','Responsáveis']] as [Screen,string][]).map(([id,label])=><button key={id} onClick={() => setScreen(id)} className={'rounded-xl px-3 py-2 text-xs font-bold sm:px-4 ' + (screen === id ? 'bg-blue-500 text-white' : 'text-slate-400 hover:bg-white/5 hover:text-white')}>{label}</button>)}
+        {([['home','Início'],['diagnostic','Diagnóstico'],['challenges','Desafios'],['practice','Aquecimento'],['learn','Aprender'],['parent','Responsáveis']] as [Screen,string][]).map(([id,label])=><button key={id} onClick={() => setScreen(id)} className={'rounded-xl px-3 py-2 text-xs font-bold sm:px-4 ' + (screen === id ? 'bg-blue-500 text-white' : 'text-slate-400 hover:bg-white/5 hover:text-white')}>{label}</button>)}
       </nav>
       <footer className="mt-8 text-center text-xs text-slate-500">Math Quest · Um produto educacional da VSA Tecnologia · MVP 0.1</footer>
     </main>
