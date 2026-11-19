@@ -87,7 +87,7 @@ export default function App() {
         <div className="mt-5 grid gap-3 sm:grid-cols-2">
           {[{n:'04',title:'Operação Resgate',desc:'Operações combinadas, frações e situações com dinheiro.',href:import.meta.env.BASE_URL+'assets/printables/mission-04-strategy-level.svg'},{n:'05',title:'Geometria e lógica',desc:'Área, perímetro, sequências e frações aplicadas.',href:import.meta.env.BASE_URL+'assets/printables/mission-05-geometry-logic.svg'}].map(item=><a key={item.n} href={item.href} target="_blank" rel="noreferrer" className="rounded-2xl border border-white/10 bg-slate-950/30 p-4 transition hover:border-cyan-300/50"><span className="text-xs font-bold text-cyan-300">MISSÃO {item.n}</span><h3 className="mt-2 font-extrabold">{item.title}</h3><p className="mt-1 text-sm text-slate-400">{item.desc}</p><span className="mt-4 inline-block text-sm font-bold text-orange-300">Abrir atividade para imprimir ↗</span></a>)}
         </div>
-      </section>
+      </section>}
 
       {screen === 'challenges' && <ChallengeScreen onBack={() => setScreen('home')} />}
       {screen === 'diagnostic' && <DiagnosticScreen onBack={() => setScreen('home')} onComplete={(result: DiagnosticResult) => { void saveDiagnostic(result); }} />}
