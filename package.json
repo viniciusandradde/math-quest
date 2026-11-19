@@ -1,7 +1,7 @@
 {
   "name": "math-quest",
   "private": true,
-  "version": "0.1.0",
+  "version": "0.1.0-beta.1",
   "type": "module",
   "description": "Plataforma lúdica de aprendizagem matemática da VSA Tecnologia.",
   "scripts": {
@@ -10,7 +10,8 @@
     "preview": "vite preview",
     "typecheck": "tsc -b --pretty",
     "test": "vitest run",
-    "test:watch": "vitest"
+    "test:watch": "vitest",
+    "verify:pwa": "node scripts/verify-pwa.mjs"
   },
   "dependencies": {
     "dexie": "^4.2.0",
