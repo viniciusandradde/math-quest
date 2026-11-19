@@ -5,11 +5,14 @@ Este documento registra os princípios de privacidade para o MVP. Não substitui
 ## MVP local
 - Não exige cadastro.
 - Não envia progresso para servidor.
+- Pergunta apenas a faixa de idade de quem vai jogar (3 a 6 ou 11 a 13 anos) e guarda só essa faixa no aparelho; não pede nome nem data de nascimento.
 - Mantém tentativas no armazenamento local do navegador (IndexedDB):
   - prática de multiplicação: combinação, tentativas, acertos e data;
   - diagnóstico: alternativa escolhida por questão e data;
   - desafios estratégicos: identificador do desafio, acerto, valor numérico respondido e data;
-  - memória matemática: número de tentativas e pares de cada partida concluída e data.
+  - memória matemática: número de tentativas e pares de cada partida concluída e data;
+  - brincadeiras de 3 a 6 anos: brincadeira, nível, se acertou de primeira, número de tentativas e data.
+- O professor de voz usa a síntese de voz do próprio aparelho; nenhum texto ou áudio é enviado a servidores.
 - Não armazena respostas em texto livre: só o valor numérico, para evitar que nomes ou outros dados digitados pela criança sejam guardados.
 - Não solicita localização, contatos, câmera ou microfone.
 - Não inclui publicidade comportamental.

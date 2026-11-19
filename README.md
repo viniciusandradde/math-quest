@@ -64,6 +64,17 @@ O universo do Math Quest combina robótica, exploração, laboratório, tecnolog
 
 A identidade oficial usa o mascote robô frontal com visor azul-marinho, olhos e sorriso ciano, fones laranja, antena e aro tecnológico azul. Ilustrações promocionais não substituem o logo mestre.
 
+## Perfis por idade
+
+Na primeira abertura, um adulto escolhe a faixa de idade de quem vai jogar. Só a faixa fica salva no aparelho.
+
+| Perfil | Faixa | O que encontra |
+|---|---|---|
+| Pequeno Explorador | 3 a 6 anos | Ache o igual, Conte comigo, Onde tem mais?, Formas, O que vem depois? e Juntar, com professor de voz calmo e níveis que sobem com a evidência |
+| Explorador Estratégico | 11 a 13 anos | Mapa de missões, memória matemática, laboratório visual, aquecimento e diagnóstico |
+
+Detalhes pedagógicos em [docs/AGE-PROFILES.md](docs/AGE-PROFILES.md).
+
 ## Metodologia de aprendizagem
 
 O Math Quest adota uma abordagem própria, provisoriamente chamada **Jornada de Domínio Matemático**, fundamentada em práticas educacionais conhecidas e adaptadas para uma experiência digital.
@@ -253,6 +264,7 @@ A publicação de um repositório no GitHub não significa que seu conteúdo est
 - [ ] Tabuadas adaptativas de 1 a 10.
 - [x] Missões estratégicas do 5º ano e jogo da memória matemática.
 - [x] Registro local das tentativas e resumo para responsáveis.
+- [x] Perfis por idade: 3 a 6 anos (com professor de voz) e 11 a 13 anos.
 - [ ] Demais jogos e missões (circuito, fábrica de robôs, escape).
 - [ ] Persistência e backup local.
 - [ ] Revisão espaçada e avaliação de retenção.

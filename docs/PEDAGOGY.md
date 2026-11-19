@@ -60,3 +60,6 @@ O diagnóstico deve ser de baixo risco e não punitivo. Deve identificar compree
 - Sem pressão por sequência diária ou tempo de tela.
 - Recompensas vinculadas a esforço, estratégia e aprendizagem.
 - Participação de responsáveis e revisão pedagógica antes de expansão.
+
+## Perfis por idade
+A experiência muda conforme a faixa escolhida na primeira abertura. Para 3 a 6 anos: material concreto, uma ideia por vez, duas opções no início, aprendizagem sem erro e professor de voz calmo. Detalhes em [AGE-PROFILES.md](AGE-PROFILES.md).

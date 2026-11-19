@@ -42,7 +42,7 @@ Quando houver necessidade de contas, sincronização entre dispositivos e gestã
 - Parent View: resumo local ou sincronizado no futuro.
 
 ## Dados locais
-A versão inicial persiste em IndexedDB (Dexie, schema v3) as tentativas de multiplicação, o diagnóstico, as tentativas dos desafios estratégicos e as partidas de memória concluídas. Regras de resumo ficam em src/learning e são testáveis sem banco; src/lib/db apenas lê e grava. Não armazenar nome completo, data de nascimento, endereço ou outros dados sensíveis no MVP.
+A versão inicial persiste em IndexedDB (Dexie, schema v4) a faixa de idade escolhida, as tentativas de multiplicação, o diagnóstico, as tentativas dos desafios estratégicos, as partidas de memória e as tentativas das brincadeiras de 3 a 6 anos. O `App` lê a faixa de idade e abre o `EarlyApp` (3 a 6) ou o `ExplorerApp` (11 a 13); veja [AGE-PROFILES.md](AGE-PROFILES.md). Regras de resumo ficam em src/learning e são testáveis sem banco; src/lib/db apenas lê e grava. Não armazenar nome completo, data de nascimento, endereço ou outros dados sensíveis no MVP.
 
 ## GitHub Pages
 O projeto é publicado em /math-quest/. Por isso:
