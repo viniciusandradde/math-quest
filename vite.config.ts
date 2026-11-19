@@ -9,8 +9,8 @@ export default defineConfig({
     react(),
     tailwindcss(),
     VitePWA({
-      registerType: 'autoUpdate',
-      includeAssets: ['favicon.svg'],
+      registerType: 'prompt',
+      includeAssets: ['favicon.svg', 'brand/math-quest-logo.svg', 'assets/environments/*.svg'],
       manifest: {
         name: 'Math Quest',
         short_name: 'Math Quest',
@@ -18,6 +18,8 @@ export default defineConfig({
         theme_color: '#071426',
         background_color: '#071426',
         display: 'standalone',
+        lang: 'pt-BR',
+        id: '/math-quest/',
         start_url: '/math-quest/',
         scope: '/math-quest/',
         icons: [
