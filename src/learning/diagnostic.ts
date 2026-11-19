@@ -1,7 +1,7 @@
 export type DiagnosticSkill = 'equal-groups' | 'repeated-addition' | 'arrays' | 'symbolic' | 'facts';
 export type DiagnosticQuestion = { id:string; skill:DiagnosticSkill; prompt:string; options:string[]; answer:string; explanation:string };
 export type DiagnosticResponse = { questionId:string; skill:DiagnosticSkill; selected:string; correct:boolean };
-export type DiagnosticResult = { responses:DiagnosticResponse[]; bySkill:Record<DiagnosticSkill,{correct:number;total:number;level:'needs-support'|'developing'|'secure'}>; completedAt:string };
+export type DiagnosticResult = { responses:DiagnosticResponse[]; bySkill:Record<DiagnosticSkill,{correct:number;total:number;level:'not-assessed'|'needs-support'|'developing'|'secure'}>; completedAt:string };
 
 export const diagnosticQuestions:DiagnosticQuestion[]=[
 {id:'groups-1',skill:'equal-groups',prompt:'Há 3 caixas com 4 estrelas em cada uma. Qual desenho representa a situação?',options:['3 grupos de 4','4 grupos de 3','3 + 4'],answer:'3 grupos de 4',explanation:'São 3 caixas, e cada caixa tem 4 estrelas.'},
@@ -18,7 +18,7 @@ export function evaluateDiagnostic(responses:DiagnosticResponse[],completedAt=ne
   const items=responses.filter(item=>item.skill===skill);
   const correct=items.filter(item=>item.correct).length;
   const ratio=items.length?correct/items.length:0;
-  return [skill,{correct,total:items.length,level:ratio>=0.8?'secure':ratio>=0.5?'developing':'needs-support'}];
+  return [skill,{correct,total:items.length,level:items.length===0?'not-assessed':ratio>=0.8?'secure':ratio>=0.5?'developing':'needs-support'}];
  })) as DiagnosticResult['bySkill'];
  return {responses,bySkill,completedAt};
 }
