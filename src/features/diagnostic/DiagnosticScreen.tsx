@@ -49,7 +49,7 @@ export default function DiagnosticScreen({ onBack, onComplete }: Props) {
       <p className="mt-3 text-center text-sm text-slate-300">Este resultado orienta as próximas atividades. Não é uma nota nem uma classificação.</p>
       <div className="mt-6 space-y-3">
         {Object.entries(result.bySkill).map(([skill, data]) => <div key={skill} className="rounded-xl bg-slate-950/40 p-4">
-          <div className="flex items-center justify-between gap-2"><strong className="capitalize">{skill.replaceAll('-', ' ')}</strong><span className="text-xs text-cyan-200">{data.level === 'secure' ? 'Bom desempenho nesta amostra' : data.level === 'developing' ? 'Em desenvolvimento' : 'Vamos praticar juntos'}</span></div>
+          <div className="flex items-center justify-between gap-2"><strong className="capitalize">{skill.replaceAll('-', ' ')}</strong><span className="text-xs text-cyan-200">{data.level === 'not-assessed' ? 'Ainda não avaliado' : data.level === 'secure' ? 'Bom desempenho nesta amostra' : data.level === 'developing' ? 'Em desenvolvimento' : 'Vamos praticar juntos'}</span></div>
           <p className="mt-1 text-xs text-slate-400">{data.correct} de {data.total} respostas corretas</p>
         </div>)}
       </div>
