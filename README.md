@@ -179,6 +179,14 @@ npm run build     # build de produção
 npm run preview   # visualizar build local
 ~~~
 
+## PWA beta 0.1.0-beta.1
+
+O aplicativo possui configuração PWA, controles de instalação/atualização e verificação do pacote gerado. **Ainda depende de CI verde e testes reais em Android antes de ser considerado instalável e pronto para piloto.**
+
+- [Checklist de aceite técnico e testes Android](docs/PWA-BETA-ACCEPTANCE.md)
+- Verificação adicional: `npm run verify:pwa` após `npm run build`.
+- Ícones SVG são provisórios; ícones PNG devem ser validados antes da distribuição ampla.
+
 ## Publicação no GitHub Pages
 
 O workflow em .github/workflows/deploy.yml compila e publica o aplicativo quando há push na branch main.
