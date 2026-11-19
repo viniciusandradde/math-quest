@@ -9,14 +9,14 @@
 - [x] Pipeline GitHub Pages.
 
 ## 0.2 — Diagnóstico
-- [ ] Diagnóstico de compreensão.
+- [x] Diagnóstico inicial de compreensão (amostra de 6 questões).
 - [ ] Mapa de domínio por habilidade.
 - [ ] Identificação de fatos já conhecidos.
 - [ ] Perfil de aprendizagem local.
 
 ## 0.3 — Laboratório visual
-- [ ] Agrupamentos manipuláveis.
-- [ ] Matrizes multiplicativas.
+- [x] Matriz multiplicativa interativa (linhas e colunas configuráveis).
+- [x] Matrizes multiplicativas.
 - [ ] Comutatividade e decomposição.
 - [ ] Relação entre multiplicação e divisão.
 
