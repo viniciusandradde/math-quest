@@ -41,6 +41,12 @@
 - [ ] Missões mais desafiadoras para 12 e 13 anos.
 - [ ] Perfil intermediário (7 a 10 anos).
 
+## 0.4.2 — Bem-estar digital (proposta)
+- [x] Análise da Missão de Brincar do Tumba da Máscara e padrão VSA de bem-estar digital infantil.
+- [ ] Pausa saudável por perfil, janela de horários e missões do mundo real.
+- [ ] Área dos pais com portão por idade (conta de dois dígitos / PIN) e resumo do dia.
+- [ ] Núcleo `@vsa/wellbeing-core` compartilhado entre os apps.
+
 ## 0.5 — Aprendizagem adaptativa
 - [ ] Revisão espaçada.
 - [ ] Critérios de domínio por combinação.

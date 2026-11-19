@@ -328,6 +328,8 @@ math-quest/
 | [docs/BRAND.md](docs/BRAND.md) | Identidade visual, mascote e recompensas |
 | [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) · [ADRs](docs/DECISIONS/) | Arquitetura e decisões |
 | [docs/PRIVACY.md](docs/PRIVACY.md) | Privacidade e proteção de crianças |
+| [docs/WELLBEING-ANALYSIS.md](docs/WELLBEING-ANALYSIS.md) | Análise da Missão de Brincar (Tumba da Máscara) e proposta de área dos pais |
+| [docs/standards/CHILD-WELLBEING-STANDARD.md](docs/standards/CHILD-WELLBEING-STANDARD.md) | Padrão VSA de bem-estar digital infantil para todas as aplicações |
 | [docs/PWA-BETA-ACCEPTANCE.md](docs/PWA-BETA-ACCEPTANCE.md) | Aceite técnico do PWA |
 | [docs/SCRATCH-LAB.md](docs/SCRATCH-LAB.md) | Ponte futura para programação em blocos |
 
