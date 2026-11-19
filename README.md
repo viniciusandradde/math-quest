@@ -66,9 +66,9 @@ Na primeira abertura, um adulto escolhe quem vai jogar. **Só a faixa de idade f
 | | Pequeno Explorador | Explorador Estratégico |
 |---|---|---|
 | **Faixa** | 3 a 6 anos | 11 a 13 anos |
-| **Atividades** | Ache o igual, Conte comigo, Onde tem mais?, Formas, O que vem depois?, Juntar | Mapa com 6 missões estratégicas, memória matemática, laboratório visual, aquecimento, diagnóstico |
+| **Atividades** | 10 brincadeiras: Ache o igual, Qual é diferente?, Grande e pequeno, Conte comigo, Onde tem mais?, Formas, O que vem depois?, Antes e depois, Juntar, Tirar | Mapa com 6 missões estratégicas, memória matemática, laboratório visual, aquecimento, diagnóstico |
 | **Apoio** | Professor de voz calmo, legenda, pontinhos sob os números | Explicação da estratégia, pista de resolução, materiais para imprimir |
-| **Dificuldade** | 2 opções e números até 3 no início; nível sobe com acertos de primeira | Problemas em várias etapas; mapa e coleção mostram o avanço |
+| **Dificuldade** | 7 níveis por brincadeira: 2 opções e números até 3 no nível 1; o nível sobe com acertos de primeira | Problemas em várias etapas; mapa e coleção mostram o avanço |
 | **Recompensas** | Estrelas por acerto de primeira | XP, nível de explorador e 10 itens colecionáveis |
 
 Detalhes em [docs/AGE-PROFILES.md](docs/AGE-PROFILES.md).
@@ -114,16 +114,27 @@ Pensado para a criança que está saindo da fase de bebê:
 - **Rodadas curtas:** 4 perguntas, respeitando a atenção nessa idade, e sem tempo.
 - **Apoio para quem ainda não lê:** voz, legenda, pontinhos sob os números e figuras grandes.
 
-| Brincadeira | Habilidade | Nível 1 → Nível 3 | A partir de |
+| Brincadeira | Habilidade | Do nível 1 ao nível 7 | A partir de |
 |---|---|---|---|
-| Ache o igual | Discriminar e classificar por forma e cor | 2 opções bem diferentes → distratores com a mesma cor ou forma | 3 anos |
-| Conte comigo | Contar objetos tocando um a um e relacionar ao numeral | Até 3 → até 5 → até 10 | 3 anos |
-| Onde tem mais? | Comparar quantidades | Diferença grande (até 4) → até 10, perguntando também "menos" | 3 anos |
-| Formas | Reconhecer círculo, quadrado e triângulo | 2 formas → 3 formas → inclui retângulo | 3 anos |
-| O que vem depois? | Reconhecer e continuar padrões | AB com 2 opções → AAB e ABC | 4 anos |
-| Juntar | Juntar dois grupos e contar o total | Soma até 4 → até 6 → até 10 | 5 anos |
+| Ache o igual | Discriminar e classificar por forma, cor e tamanho | 2 opções bem diferentes → 4 opções que diferem em um só atributo, incluindo tamanho | 3 anos |
+| Qual é diferente? | Achar a figura que não combina | 3 figuras (forma e cor diferentes) → 5 figuras em que só a cor, a forma ou o tamanho muda | 3 anos |
+| Grande e pequeno | Comparar tamanhos | 2 objetos (maior) → 4 objetos com diferenças sutis → "o do meio" | 3 anos |
+| Conte comigo | Contar tocando um a um e relacionar ao numeral | Até 3 → 5 → 6 → 8 → 10 → 12 → 15 | 3 anos |
+| Onde tem mais? | Comparar quantidades | 2 grupos com diferença grande → 3 grupos até 12, com "mais" e "menos" | 3 anos |
+| Formas | Reconhecer formas | Círculo, quadrado e triângulo → retângulo, oval, losango e estrela | 3 anos |
+| O que vem depois? | Reconhecer e continuar padrões | AB → AAB → ABC → AABB → figura faltando no meio da fila | 4 anos |
+| Antes e depois | Vizinhos dos números | "Depois" até 5 → "antes" → "entre" → até 20 | 4 anos |
+| Juntar | Adição com objetos | Soma até 4 → até 10 | 5 anos |
+| Tirar | Subtração com objetos ("quantos ficaram?") | Tirar 1 de até 3 → tirar vários de até 10 | 5 anos |
 
-**Níveis adaptativos:** o nível de cada brincadeira sobe sozinho com evidência. O nível 2 vem com 5 acertos de primeira e pelo menos 60% de acerto de primeira; o nível 3, com 12 acertos de primeira e pelo menos 70%.
+**Níveis adaptativos:** cada brincadeira tem 7 níveis, e o nível sobe sozinho com evidência (acertos de primeira acumulados e proporção de acertos de primeira):
+
+| Nível | 2 | 3 | 4 | 5 | 6 | 7 |
+|---|---|---|---|---|---|---|
+| Acertos de primeira | 4 | 8 | 12 | 16 | 20 | 25 |
+| Proporção mínima | 60% | 65% | 65% | 70% | 70% | 75% |
+
+O nível 1 atende a criança de 3 anos; o nível 7, a que está perto dos 6 e da entrada no 1º ano. As regras de cada nível ficam em tabelas no código (`src/learning/early.ts`), fáceis de revisar com um educador.
 
 ### Professor de voz
 
@@ -161,12 +172,16 @@ Na Educação Infantil, a BNCC organiza a aprendizagem em **direitos de aprendiz
 
 | Brincadeira | Objetivos de aprendizagem | Como a brincadeira trabalha |
 |---|---|---|
-| Ache o igual | **EI02ET05**: classificar objetos por um atributo (tamanho, peso, cor, forma). **EI03ET05**: classificar objetos e figuras por semelhanças e diferenças | Encontrar a figura com a mesma forma e cor; no nível 3, distinguir figuras que compartilham um atributo |
+| Ache o igual | **EI02ET05**: classificar objetos por um atributo (tamanho, peso, cor, forma). **EI03ET05**: classificar objetos e figuras por semelhanças e diferenças | Encontrar a figura com a mesma forma, cor e tamanho; nos níveis altos, distinguir figuras que diferem em um só atributo |
+| Qual é diferente? | **EI02ET05** e **EI03ET05** | Identificar a figura que não combina, pela forma, pela cor ou pelo tamanho |
+| Grande e pequeno | **EI02ET05** (atributo tamanho) e **EI03ET05** | Comparar tamanhos: o maior, o menor e, no nível 7, o do meio |
 | Formas | **EI02ET05** e **EI03ET05** | Reconhecer e nomear círculo, quadrado, triângulo e retângulo pelas características ("tem três lados e três pontas") |
 | Conte comigo | **EI02ET07**: contar oralmente objetos em contextos diversos. **EI03ET07**: relacionar números às quantidades | Tocar em cada objeto enquanto o professor conta; escolher o numeral (com pontinhos de apoio no nível 1) |
 | Onde tem mais? | **EI03ET07** | Comparar a quantidade de dois grupos; no nível 3, identificar também onde tem menos |
-| O que vem depois? | **EI03ET07**: identificar o antes, o depois e o entre em uma sequência | Continuar padrões de figuras (AB, AAB, ABC), preparando a ideia de regularidade |
+| O que vem depois? | **EI03ET07**: identificar o antes, o depois e o entre em uma sequência | Continuar padrões de figuras (AB, AAB, ABC, AABB) e completar a figura que falta, preparando a ideia de regularidade |
+| Antes e depois | **EI03ET07**: relacionar números às quantidades e identificar o antes, o depois e o entre | Descobrir o número que vem antes, depois ou entre outros numa fila de números (até 20) |
 | Juntar | **EI03ET07** | Juntar dois grupos e contar o total, preparando a adição com o significado de juntar do 1º ano |
+| Tirar | **EI03ET07** | Ver alguns objetos "irem embora" e contar os que ficaram, preparando a subtração com o significado de retirar do 1º ano |
 
 ### Ensino Fundamental — Matemática, 11 a 13 anos
 

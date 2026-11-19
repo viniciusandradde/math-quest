@@ -36,7 +36,7 @@
 
 ## 0.4.1 — Perfis por idade
 - [x] Escolha da faixa de idade na primeira abertura (3 a 6 e 11 a 13 anos).
-- [x] Pequeno Explorador: 6 brincadeiras com níveis adaptativos e professor de voz calmo.
+- [x] Pequeno Explorador: 10 brincadeiras, 7 níveis adaptativos cada e professor de voz calmo.
 - [ ] Vozes gravadas com voz profissional para as frases fixas do professor.
 - [ ] Missões mais desafiadoras para 12 e 13 anos.
 - [ ] Perfil intermediário (7 a 10 anos).

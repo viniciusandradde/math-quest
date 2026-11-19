@@ -1,6 +1,7 @@
 # Changelog
 
 ## Não publicado
+- Pequeno Explorador ampliado: 4 brincadeiras novas (Qual é diferente?, Grande e pequeno, Antes e depois, Tirar) e 7 níveis por brincadeira, com novas formas (oval, losango, estrela), tamanho como atributo, 3 grupos para comparar, padrões AABB, figura faltando no meio e números até 20.
 - README reescrito com a metodologia completa: referências e onde aparecem, ciclo pedagógico, princípios para 3 a 6 e 11 a 13 anos, professor de voz, avaliação e recompensas, acessibilidade e alinhamento com a BNCC (Educação Infantil e Matemática do Ensino Fundamental).
 - Perfis por idade: na primeira abertura o adulto escolhe 3 a 6 ou 11 a 13 anos; só a faixa fica salva e a troca exige confirmação.
 - Pequeno Explorador (3 a 6 anos): Ache o igual, Conte comigo (tocar e contar), Onde tem mais?, Formas, O que vem depois? e Juntar, com duas opções no nível 1, níveis adaptativos e estrelas por acerto de primeira.
