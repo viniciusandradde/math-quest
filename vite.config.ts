@@ -3,33 +3,38 @@ import react from '@vitejs/plugin-react';
 import tailwindcss from '@tailwindcss/vite';
 import { VitePWA } from 'vite-plugin-pwa';
 
+const base = '/math-quest/';
+
 export default defineConfig({
-  base: '/math-quest/',
+  base,
   plugins: [
     react(),
     tailwindcss(),
     VitePWA({
-      registerType: 'prompt',
-      includeAssets: ['favicon.svg', 'brand/math-quest-logo.svg', 'assets/environments/*.svg'],
+      registerType: 'autoUpdate',
+      includeAssets: ['favicon.svg', 'brand/math-quest-logo.svg'],
       manifest: {
-        name: 'Math Quest',
+        id: base,
+        name: 'Math Quest — Missões de Matemática',
         short_name: 'Math Quest',
-        description: 'Aprender matemática. Resolver desafios. Criar possibilidades.',
+        description: 'Desafios de matemática para estudantes do 5º ano.',
+        lang: 'pt-BR',
         theme_color: '#071426',
         background_color: '#071426',
         display: 'standalone',
-        lang: 'pt-BR',
-        id: '/math-quest/',
-        start_url: '/math-quest/',
-        scope: '/math-quest/',
+        start_url: base,
+        scope: base,
         icons: [
-          { src: '/math-quest/icons/icon-192.svg', sizes: '192x192', type: 'image/svg+xml', purpose: 'any maskable' },
-          { src: '/math-quest/icons/icon-512.svg', sizes: '512x512', type: 'image/svg+xml', purpose: 'any maskable' }
+          { src: `${base}icons/icon-192.svg`, sizes: '192x192', type: 'image/svg+xml', purpose: 'any' },
+          { src: `${base}icons/icon-512.svg`, sizes: '512x512', type: 'image/svg+xml', purpose: 'any' }
         ]
       },
       workbox: {
         globPatterns: ['**/*.{js,css,html,svg,png,webp,woff2}'],
-        navigateFallback: '/math-quest/index.html'
+        navigateFallback: `${base}index.html`,
+        cleanupOutdatedCaches: true,
+        clientsClaim: true,
+        skipWaiting: true
       }
     })
   ],
