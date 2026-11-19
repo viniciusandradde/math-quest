@@ -17,7 +17,9 @@
 ## 0.3 — Laboratório visual
 - [x] Matriz multiplicativa interativa (linhas e colunas configuráveis).
 - [x] Matrizes multiplicativas.
-- [ ] Comutatividade e decomposição.
+- [x] Comutatividade e decomposição. (primeira atividade impressa)
+- [x] Materiais físicos iniciais: grupos iguais, matrizes e problemas contextualizados.
+- [ ] Relação entre multiplicação e divisão.
 - [ ] Relação entre multiplicação e divisão.
 
 ## 0.4 — Jogos e missões
