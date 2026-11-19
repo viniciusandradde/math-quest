@@ -14,6 +14,7 @@
   <a href="https://viniciusandradde.github.io/math-quest/">Abrir aplicativo</a> ·
   <a href="docs/PRODUCT.md">Produto</a> ·
   <a href="docs/PEDAGOGY.md">Metodologia</a> ·
+  <a href="docs/ASSESSMENT.md">Diagnóstico</a> ·
   <a href="docs/ARCHITECTURE.md">Arquitetura</a> ·
   <a href="LICENSE">Licença</a>
 </p>
@@ -220,8 +221,8 @@ A publicação de um repositório no GitHub não significa que seu conteúdo est
 - [x] Definição inicial do produto e público.
 - [x] Direcionamento pedagógico da multiplicação.
 - [x] Arquitetura inicial compatível com GitHub Pages.
-- [ ] Diagnóstico de conhecimentos prévios.
-- [ ] Laboratório visual da multiplicação.
+- [x] Diagnóstico inicial de conhecimentos prévios (amostra de 6 questões).
+- [x] Laboratório visual da multiplicação com matrizes interativas.
 - [ ] Tabuadas adaptativas de 1 a 10.
 - [ ] Jogos e missões.
 - [ ] Persistência e backup local.
