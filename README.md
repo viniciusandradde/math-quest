@@ -16,6 +16,7 @@
   <a href="docs/PEDAGOGY.md">Metodologia</a> ·
   <a href="docs/ASSESSMENT.md">Diagnóstico</a> ·
   <a href="docs/ARCHITECTURE.md">Arquitetura</a> ·
+  <a href="docs/CREATIVE-PIPELINE.md">Esteira criativa e multimídia</a> ·
   <a href="LICENSE">Licença</a>
 </p>
 
@@ -44,7 +45,7 @@ O universo do Math Quest combina robótica, exploração, laboratório, tecnolog
 
 <p align="center"><img src="assets/brand/math-quest-logo.svg" alt="Logo Math Quest" width="150" /></p>
 
-**Assinatura:** Aprender matemática. Resolver desafios. Criar possibilidades.
+**Assinatura:** Aprender matemática. Resolver desafios. Criar possibilidades.\n\nA identidade oficial usa o mascote robô frontal com visor azul-marinho, olhos e sorriso ciano, fones laranja, antena e aro tecnológico azul. Ilustrações promocionais não substituem o logo mestre.
 
 ## Metodologia de aprendizagem
 
