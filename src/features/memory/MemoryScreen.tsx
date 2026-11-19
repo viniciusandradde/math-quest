@@ -7,10 +7,9 @@ import {
   isCardFaceUp,
   isMemoryComplete,
   revealCard,
-  type MemoryGameState
+  type MemoryGameState,
+  type MemorySessionResult
 } from '../../learning/memory';
-
-export type MemorySessionResult = { attempts: number; pairs: number; completedAt: string };
 
 type Props = {
   onBack: () => void;

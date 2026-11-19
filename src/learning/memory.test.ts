@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { buildMemoryDeck, createMemoryGame, describeMatch, describeMismatch, hideMismatch, isMemoryComplete, memoryPairs, revealCard } from './memory';
+import { buildMemoryDeck, createMemoryGame, describeMatch, describeMismatch, hideMismatch, isMemoryComplete, memoryPairs, revealCard, summarizeMemorySessions } from './memory';
 
 describe('Math Quest memory game', () => {
   it('creates two cards for every math pair', () => {
@@ -96,5 +96,15 @@ describe('Math Quest memory game rules', () => {
       expect(pair.explanation.length).toBeGreaterThan(10);
       expect(pair.explanation).toContain(pair.result.replace(/ m²| m/, ''));
     }
+  });
+});
+
+describe('memory session summary', () => {
+  it('summarizes completed sessions', () => {
+    expect(summarizeMemorySessions([])).toEqual({ sessions: 0, bestAttempts: null });
+    expect(summarizeMemorySessions([
+      { attempts: 10, pairs: 6, completedAt: '2026-11-19T10:00:00.000Z' },
+      { attempts: 8, pairs: 6, completedAt: '2026-11-19T09:00:00.000Z' }
+    ])).toEqual({ sessions: 2, bestAttempts: 8, lastCompletedAt: '2026-11-19T10:00:00.000Z' });
   });
 });

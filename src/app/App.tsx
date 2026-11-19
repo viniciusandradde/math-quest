@@ -1,15 +1,23 @@
 import { useEffect, useMemo, useState } from 'react';
 import { buildChoices, buildFact } from '../learning/multiplication';
-import { getProgressSummary, recordAnswer, saveDiagnostic } from '../lib/db';
+import { getLearningOverview, recordAnswer, recordChallengeAttempt, saveDiagnostic, saveMemorySession, type LearningOverview } from '../lib/db';
+import { summarizeChallengeAttempts } from '../learning/challenges';
+import { summarizeMemorySessions } from '../learning/memory';
 import DiagnosticScreen from '../features/diagnostic/DiagnosticScreen';
 import ArrayLab from '../features/lab/ArrayLab';
 import ChallengeScreen from '../features/challenges/ChallengeScreen';
 import MemoryScreen from '../features/memory/MemoryScreen';
+import ParentScreen from '../features/parent/ParentScreen';
 import PwaStatus from '../components/PwaStatus';
 import type { DiagnosticResult } from '../learning/diagnostic';
 
 type Screen = 'home' | 'diagnostic' | 'practice' | 'learn' | 'parent' | 'challenges' | 'memory';
 const logo = import.meta.env.BASE_URL + 'brand/math-quest-logo.svg';
+const emptyOverview: LearningOverview = {
+  multiplication: { factsSeen: 0, attempts: 0, correct: 0, accuracy: 0 },
+  challenges: summarizeChallengeAttempts([]),
+  memory: summarizeMemorySessions([])
+};
 
 export default function App() {
   const [screen, setScreen] = useState<Screen>('home');
@@ -17,12 +25,16 @@ export default function App() {
   const [right, setRight] = useState(8);
   const [selected, setSelected] = useState<number | null>(null);
   const [feedback, setFeedback] = useState('');
-  const [summary, setSummary] = useState({ factsSeen: 0, attempts: 0, correct: 0, accuracy: 0 });
+  const [overview, setOverview] = useState<LearningOverview>(emptyOverview);
+  const summary = overview.multiplication;
   const fact = useMemo(() => buildFact(left, right), [left, right]);
   const choices = useMemo(() => buildChoices(fact.answer), [fact.answer]);
 
-  async function refreshSummary() { setSummary(await getProgressSummary()); }
-  useEffect(() => { void refreshSummary(); }, []);
+  async function refreshSummary() {
+    try { setOverview(await getLearningOverview()); }
+    catch (error) { console.error('Não foi possível ler o progresso local:', error); }
+  }
+  useEffect(() => { if (screen === 'home' || screen === 'parent') void refreshSummary(); }, [screen]);
 
   async function answer(value: number) {
     if (selected !== null) return;
@@ -91,8 +103,8 @@ export default function App() {
         </div>
       </section>}
 
-      {screen === 'challenges' && <ChallengeScreen onBack={() => setScreen('home')} />}
-      {screen === 'memory' && <MemoryScreen onBack={() => setScreen('home')} />}
+      {screen === 'challenges' && <ChallengeScreen onBack={() => setScreen('home')} onAnswer={attempt => { void recordChallengeAttempt(attempt); }} />}
+      {screen === 'memory' && <MemoryScreen onBack={() => setScreen('home')} onComplete={result => { void saveMemorySession(result); }} />}
       {screen === 'diagnostic' && <DiagnosticScreen onBack={() => setScreen('home')} onComplete={(result: DiagnosticResult) => { void saveDiagnostic(result); }} />}
       {screen === 'practice' && <section className="mx-auto mt-8 max-w-2xl rounded-3xl border border-white/10 bg-[#10223a] p-6 sm:p-9">
         <button onClick={() => setScreen('home')} className="text-sm text-cyan-300">← Voltar ao laboratório</button>
@@ -121,14 +133,7 @@ export default function App() {
         <button onClick={() => setScreen('practice')} className="mt-6 rounded-xl bg-orange-400 px-5 py-3 font-bold text-slate-950">Praticar agora</button>
       </section>}
 
-      {screen === 'parent' && <section className="mt-8 rounded-3xl border border-white/10 bg-[#10223a] p-6">
-        <button onClick={() => setScreen('home')} className="text-sm text-cyan-300">← Início</button>
-        <h1 className="mt-5 text-3xl font-black">Resumo de aprendizagem</h1>
-        <p className="mt-2 text-sm text-slate-400">Dados armazenados neste dispositivo.</p>
-        <div className="mt-6 grid grid-cols-2 gap-3 sm:grid-cols-4">
-          {[['Combinações vistas',summary.factsSeen],['Tentativas',summary.attempts],['Acertos',summary.correct],['Precisão',summary.accuracy + '%']].map(([label,value])=><div key={String(label)} className="rounded-xl bg-slate-950/40 p-4"><p className="text-xs text-slate-400">{label}</p><strong className="mt-2 block text-2xl">{value}</strong></div>)}
-        </div>
-      </section>}
+      {screen === 'parent' && <ParentScreen overview={overview} onBack={() => setScreen('home')} />}
 
       <nav aria-label="Navegação principal" className="mx-auto mt-8 flex max-w-2xl flex-wrap justify-center gap-1 rounded-2xl sm:gap-2 border border-white/10 bg-[#0b1a2c] p-2">
         {([['home','Início'],['diagnostic','Diagnóstico'],['challenges','Desafios'],['memory','Memória'],['practice','Aquecimento'],['learn','Aprender'],['parent','Responsáveis']] as [Screen,string][]).map(([id,label])=><button key={id} onClick={() => setScreen(id)} aria-current={screen === id ? 'page' : undefined} className={'rounded-xl px-3 py-2 text-xs font-bold sm:px-4 ' + (screen === id ? 'bg-blue-500 text-white' : 'text-slate-400 hover:bg-white/5 hover:text-white')}>{label}</button>)}

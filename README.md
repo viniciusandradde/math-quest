@@ -45,13 +45,23 @@ O universo do Math Quest combina robótica, exploração, laboratório, tecnolog
 
 <p align="center"><img src="assets/brand/math-quest-logo.svg" alt="Logo Math Quest" width="150" /></p>
 
-**Assinatura:** Aprender matemática. Resolver desafios. Criar possibilidades.\n\n### Biblioteca visual inicial\n\n- [Expressões e poses do mascote](public/assets/characters/mascot-expressions.svg)\n- [Laboratório matemático](public/assets/environments/math-lab.svg)
+**Assinatura:** Aprender matemática. Resolver desafios. Criar possibilidades.
+
+### Biblioteca visual inicial
+
+- [Expressões e poses do mascote](public/assets/characters/mascot-expressions.svg)
+- [Laboratório matemático](public/assets/environments/math-lab.svg)
 - [Fábrica de robôs](public/assets/environments/robot-factory.svg)
 - [Base espacial](public/assets/environments/space-base.svg)
-- [Ilha dos desafios](public/assets/environments/challenge-island.svg)\n- [Itens colecionáveis](public/assets/items/collectibles.svg)\n- [Catálogo de assets](public/assets/ASSET-CATALOG.md)
+- [Ilha dos desafios](public/assets/environments/challenge-island.svg)
+- [Itens colecionáveis](public/assets/items/collectibles.svg)
+- [Catálogo de assets](public/assets/ASSET-CATALOG.md)
 - [Materiais físicos e orientações de impressão](docs/PRINTABLES.md)
 - [Gabarito das missões avançadas](docs/CHALLENGE-ANSWER-KEY.md)
-- [Banco digital de desafios](src/learning/challenges.ts)\n\nA identidade oficial usa o mascote robô frontal com visor azul-marinho, olhos e sorriso ciano, fones laranja, antena e aro tecnológico azul. Ilustrações promocionais não substituem o logo mestre.
+- [Banco digital de desafios](src/learning/challenges.ts)
+- [Pares do jogo da memória](src/learning/memory.ts)
+
+A identidade oficial usa o mascote robô frontal com visor azul-marinho, olhos e sorriso ciano, fones laranja, antena e aro tecnológico azul. Ilustrações promocionais não substituem o logo mestre.
 
 ## Metodologia de aprendizagem
 
@@ -239,7 +249,9 @@ A publicação de um repositório no GitHub não significa que seu conteúdo est
 - [x] Diagnóstico inicial de conhecimentos prévios (amostra de 6 questões).
 - [x] Laboratório visual da multiplicação com matrizes interativas.
 - [ ] Tabuadas adaptativas de 1 a 10.
-- [ ] Jogos e missões.
+- [x] Missões estratégicas do 5º ano e jogo da memória matemática.
+- [x] Registro local das tentativas e resumo para responsáveis.
+- [ ] Demais jogos e missões (circuito, fábrica de robôs, escape).
 - [ ] Persistência e backup local.
 - [ ] Revisão espaçada e avaliação de retenção.
 - [ ] Painel de responsáveis.

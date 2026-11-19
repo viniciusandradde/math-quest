@@ -107,3 +107,17 @@ export function describeMatch(pairId: string, pairs: MemoryPair[] = memoryPairs)
   const pair = pairs.find(item => item.id === pairId);
   return pair ? pair.operation + ' = ' + pair.result + '. ' + pair.explanation : '';
 }
+
+/** Registro de uma partida concluída. Não contém dados pessoais. */
+export type MemorySessionResult = { attempts: number; pairs: number; completedAt: string };
+
+export type MemorySummary = { sessions: number; bestAttempts: number | null; lastCompletedAt?: string };
+
+export function summarizeMemorySessions(sessions: MemorySessionResult[]): MemorySummary {
+  if (!sessions.length) return { sessions: 0, bestAttempts: null };
+  return {
+    sessions: sessions.length,
+    bestAttempts: Math.min(...sessions.map(item => item.attempts)),
+    lastCompletedAt: sessions.map(item => item.completedAt).sort().at(-1)
+  };
+}

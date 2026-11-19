@@ -25,7 +25,8 @@
 - [x] Missões do nível 5º ano: operações em etapas, frações, decimais, área, perímetro e lógica.
 - [x] Banco digital inicial com 6 desafios e feedback explicativo.
 - [x] Tela de desafios estratégicos com resposta construída e explicação.
-- [ ] Memória matemática.
+- [x] Memória matemática: operação × resultado, sem cronômetro, com feedback explicativo.
+- [x] Registro local das tentativas dos desafios e das partidas de memória.
 - [ ] Circuito matemático.
 - [ ] Fábrica de robôs.
 - [ ] Escape matemático.
@@ -39,7 +40,8 @@
 
 ## 0.6 — Responsáveis e validação
 - [ ] Exportar/importar progresso.
-- [ ] Painel dos responsáveis.
+- [x] Resumo local para responsáveis (desafios, memória e aquecimento).
+- [ ] Painel dos responsáveis completo (diagnóstico, evolução e recomendações).
 - [ ] Testes de usabilidade mobile.
 - [ ] Piloto acompanhado e avaliação pedagógica.
 

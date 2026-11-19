@@ -1,9 +1,9 @@
 import { useState } from 'react';
-import { challenges, checkChallengeAnswer } from '../../learning/challenges';
+import { buildChallengeAttempt, challenges, checkChallengeAnswer, type ChallengeAttempt } from '../../learning/challenges';
 
-type Props = { onBack: () => void };
+type Props = { onBack: () => void; onAnswer?: (attempt: ChallengeAttempt) => void };
 
-export default function ChallengeScreen({ onBack }: Props) {
+export default function ChallengeScreen({ onBack, onAnswer }: Props) {
   const [index, setIndex] = useState(0);
   const [response, setResponse] = useState('');
   const [submitted, setSubmitted] = useState(false);
@@ -13,9 +13,10 @@ export default function ChallengeScreen({ onBack }: Props) {
 
   function submit() {
     if (!response.trim() || submitted) return;
-    const isCorrect = checkChallengeAnswer(challenge, response);
-    if (isCorrect) setCorrectCount(value => value + 1);
+    const attempt = buildChallengeAttempt(challenge, response);
+    if (attempt.correct) setCorrectCount(value => value + 1);
     setSubmitted(true);
+    onAnswer?.(attempt);
   }
 
   function next() {
