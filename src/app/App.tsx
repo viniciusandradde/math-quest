@@ -48,7 +48,7 @@ export default function App() {
       </header>
 
       {screen === 'home' && <section className="mt-8 grid gap-6 md:grid-cols-[1.15fr_.85fr]">
-        <div className="rounded-3xl border border-blue-300/15 bg-gradient-to-br from-[#12365b] to-[#10213a] p-6 shadow-2xl sm:p-9">
+        <div className="relative overflow-hidden rounded-3xl border border-blue-300/15 bg-gradient-to-br from-[#12365b] to-[#10213a] p-6 shadow-2xl sm:p-9" style={{ backgroundImage: `linear-gradient(115deg, rgba(7,20,38,.94), rgba(16,34,58,.82)), url("${import.meta.env.BASE_URL}assets/environments/math-lab.svg")`, backgroundSize: "cover", backgroundPosition: "center" }}>
           <p className="text-sm font-bold uppercase tracking-[.2em] text-cyan-300">Bem-vindo, explorador</p>
           <h1 className="mt-3 max-w-xl text-4xl font-black leading-tight sm:text-5xl">Sua próxima descoberta começa com <span className="text-orange-400">multiplicação.</span></h1>
           <p className="mt-4 max-w-lg text-slate-300">Explore padrões, resolva enigmas e ajude nosso robô a recuperar a energia do laboratório.</p>
