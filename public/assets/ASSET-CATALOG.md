@@ -8,6 +8,9 @@
 ## Cenários
 
 - Laboratório matemático vetorial: [math-lab.svg](../environments/math-lab.svg)
+- Fábrica de robôs: [robot-factory.svg](../environments/robot-factory.svg)
+- Base espacial: [space-base.svg](../environments/space-base.svg)
+- Ilha dos desafios: [challenge-island.svg](../environments/challenge-island.svg)
 - Prévia de cenário premium gerado no Higgsfield (GPT Image 2.6, 16:9): [abrir imagem](https://d8j0ntlcm91z4.cloudfront.net/user_3JEBvIBbBxFXhwnFWwMOJeZAkLe/hf_20261119_154202_16a9fee9-6bdd-4216-a50e-2f407c4711ba.png)
   - Estado: geração concluída.
   - Consumo estimado: 0,25 crédito da conta Higgsfield.
