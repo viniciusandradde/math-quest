@@ -20,7 +20,7 @@ export default function ArrayLab() {
         </select>
       </label>
     </div>
-    <div className="mx-auto my-7 grid max-w-xs gap-2" style={{gridTemplateRows: 'repeat(' + rows + ', minmax(0, 1fr)'}}>
+    <div className="mx-auto my-7 grid max-w-xs gap-2" style={{gridTemplateRows: 'repeat(' + rows + ', minmax(0, 1fr))'}}>
       {Array.from({length:rows},(_,row)=><div key={row} className="grid gap-2" style={{gridTemplateColumns:'repeat(' + columns + ', minmax(0, 1fr))'}}>
         {Array.from({length:columns},(_,col)=><div key={col} aria-label={'Linha ' + (row+1) + ', coluna ' + (col+1)} className="aspect-square rounded-lg border border-cyan-300/30 bg-cyan-300/10 shadow-[inset_0_0_18px_rgba(34,211,238,.08)]"><div className="flex h-full items-center justify-center text-xl text-cyan-200">●</div></div>)}
       </div>)}
