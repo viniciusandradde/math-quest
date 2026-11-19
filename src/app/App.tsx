@@ -75,6 +75,16 @@ export default function App() {
         </aside>
       </section>}
 
+      {screen === 'home' && <section className="mt-6 rounded-3xl border border-white/10 bg-[#0d1c30] p-5 sm:p-7">
+        <div className="flex flex-wrap items-end justify-between gap-3">
+          <div><p className="text-xs font-bold uppercase tracking-[.2em] text-cyan-300">Fora da tela também se aprende</p><h2 className="mt-2 text-2xl font-black">Caderno de missões para imprimir</h2><p className="mt-2 text-sm text-slate-400">Atividades para desenhar, manipular, explicar e resolver no papel.</p></div>
+          <span className="rounded-full border border-orange-300/30 bg-orange-300/10 px-3 py-1 text-xs font-bold text-orange-200">3 atividades</span>
+        </div>
+        <div className="mt-5 grid gap-3 sm:grid-cols-3">
+          {[{n:'01',title:'Grupos iguais',desc:'Desenhar grupos e relacionar à adição repetida.',href:import.meta.env.BASE_URL+'assets/printables/mission-01-equal-groups.svg'},{n:'02',title:'Matrizes',desc:'Organizar linhas, colunas e observar padrões.',href:import.meta.env.BASE_URL+'assets/printables/mission-02-arrays.svg'},{n:'03',title:'Problemas de aventura',desc:'Resolver situações e criar um desafio próprio.',href:import.meta.env.BASE_URL+'assets/printables/mission-03-word-problems.svg'}].map(item=><a key={item.n} href={item.href} target="_blank" rel="noreferrer" className="rounded-2xl border border-white/10 bg-slate-950/30 p-4 transition hover:border-cyan-300/50"><span className="text-xs font-bold text-cyan-300">MISSÃO {item.n}</span><h3 className="mt-2 font-extrabold">{item.title}</h3><p className="mt-1 text-sm text-slate-400">{item.desc}</p><span className="mt-4 inline-block text-sm font-bold text-orange-300">Abrir para imprimir ↗</span></a>)}
+        </div>
+      </section>}
+
       {screen === 'diagnostic' && <DiagnosticScreen onBack={() => setScreen('home')} onComplete={(result: DiagnosticResult) => { void saveDiagnostic(result); }} />}
       {screen === 'practice' && <section className="mx-auto mt-8 max-w-2xl rounded-3xl border border-white/10 bg-[#10223a] p-6 sm:p-9">
         <button onClick={() => setScreen('home')} className="text-sm text-cyan-300">← Voltar ao laboratório</button>
