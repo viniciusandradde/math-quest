@@ -18,11 +18,11 @@ export const challenges: Challenge[] = [
     title: 'Estoque de energia',
     area: 'Operações em várias etapas',
     difficulty: 'Intermediário',
-    prompt: 'A equipe precisa preparar 6 robôs. Cada robô usa 8 células de energia. O laboratório tem 70 células e separou mais 5 para reserva técnica.',
-    question: 'Depois de montar os 6 robôs, quantas células ficam disponíveis, considerando que as 5 da reserva também serão usadas?',
+    prompt: 'O laboratório tem 70 células. Separe 5 para reserva técnica. Depois, use 8 células em cada um dos 6 robôs.',
+    question: 'Depois de separar a reserva e abastecer os robôs, quantas células ficam no estoque geral?',
     answer: 17,
-    hint: 'Primeiro calcule 6 × 8. Depois subtraia esse consumo de 70 e acrescente as 5 células da reserva.',
-    explanation: '6 × 8 = 48 células. Sobram 70 − 48 = 22. Com as 5 células da reserva técnica, ficam 27 disponíveis. Atenção: o enunciado diz que a reserva também será usada, então o total disponível após separar a reserva é 70 − 48 − 5 = 17.'
+    hint: 'Calcule 6 × 8 para descobrir o consumo. Subtraia esse valor de 70 e depois retire as 5 células reservadas.',
+    explanation: '6 × 8 = 48 células para os robôs. 70 − 48 = 22. Como 5 foram separadas para reserva técnica, o estoque geral fica com 22 − 5 = 17 células.'
   },
   {
     id: 'fraction-parts',
