@@ -69,3 +69,40 @@ public/assets/
 
 ## Proteção de segredos
 Tokens de Higgsfield, Hugging Face e ElevenLabs nunca podem ficar em variáveis `VITE_*`, arquivos versionados ou código frontend. GitHub Pages é hospedagem estática: qualquer segredo incluído no bundle fica público.
+
+## Referência de custos consultada — 19/11/2026
+
+Valores em USD, sujeitos a alteração, impostos, câmbio e disponibilidade regional.
+
+| Serviço | Referência pública | Observação |
+|---|---:|---|
+| ChatGPT Image | Conforme plano ChatGPT | Geração no ChatGPT; limites dependem do plano e do produto. |
+| Higgsfield Starter | A partir de US$ 9/mês na página de preços | Créditos mensais; conferir o checkout e a quantidade atual. |
+| Higgsfield Plus | A página exibe US$ 47/mês na cobrança anual em uma oferta | Créditos e promoções mudam. |
+| Hugging Face Free | Sem crédito mensal incluído atualmente na página de preços | Inferência por provedor é pay-as-you-go. |
+| Hugging Face PRO | US$ 9/mês | Inclui US$ 2/mês em créditos de compute/inference. |
+| ElevenLabs Free | US$ 0/mês; 10 mil créditos/mês | Uso gratuito limitado; sem licença comercial. |
+| ElevenLabs Starter | US$ 6/mês; 30 mil créditos/mês | Inclui licença comercial e uso comercial de música. |
+| ElevenLabs Creator | US$ 22/mês; 121 mil créditos/mês | Inclui recursos adicionais de voz. |
+
+### Estimativas reais de preflight na conta conectada Higgsfield
+As estimativas abaixo foram consultadas sem submeter gerações:
+- Uma imagem de cenário 16:9 com GPT Image 2.6: **0,25 crédito**.
+- Uma trilha instrumental de 30 segundos com ElevenLabs Music v2.5: **4,36 créditos**.
+
+Esses números são estimativas do motor de créditos da conta conectada e não equivalem a preço em dólares. O custo final depende do pacote de créditos vigente. Antes de cada geração paga, executar o preflight e apresentar o total para aprovação.
+
+### ElevenLabs — consumo aproximado de créditos publicado
+- Text to Speech: cerca de 1 crédito por caractere nos modelos padrão indicados.
+- Música: cerca de 900 créditos por minuto.
+- Efeitos sonoros: cerca de 200 créditos por geração.
+Os consumos variam conforme produto e modelo. Consultar o painel antes de produzir lotes.
+
+### Recomendação de compra
+Não contratar planos adicionais antes de validar um pequeno lote de assets. Começar pelo plano gratuito e créditos já disponíveis, produzir protótipos, medir custo por asset aprovado e só então decidir se vale assinar Higgsfield Starter/Plus ou ElevenLabs Starter/Creator.
+
+### Fontes de preço
+- Higgsfield: https://higgsfield.ai/pricing
+- Hugging Face: https://huggingface.co/pricing
+- Hugging Face Inference Providers: https://huggingface.co/docs/inference-providers/pricing
+- ElevenLabs: https://elevenlabs.io/pt/pricing
