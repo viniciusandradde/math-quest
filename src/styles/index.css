@@ -1,19 +1,207 @@
 @import "tailwindcss";
+@import "@fontsource/orbitron/latin-700.css";
+@import "@fontsource/orbitron/latin-900.css";
+@import "@fontsource/inter/latin-400.css";
+@import "@fontsource/inter/latin-600.css";
+@import "@fontsource/inter/latin-800.css";
+
+/* Paleta e tipografia do brand board do Math Quest (assets/brand/reference). */
+@theme {
+  --font-display: "Orbitron", "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-sans: "Inter", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+
+  --color-mq-night: #06122a;
+  --color-mq-navy: #0b1b3b;   /* Primária */
+  --color-mq-deep: #10295a;
+  --color-mq-blue: #0d6efd;   /* Secundária */
+  --color-mq-cyan: #00e5ff;   /* Destaque */
+  --color-mq-orange: #ff8a00; /* Ação */
+  --color-mq-yellow: #ffcb57; /* Apoio */
+  --color-mq-green: #21c02b;  /* Acerto (telas de exemplo) */
+  --color-mq-ink: #dcecff;
+
+  --animate-float: mq-float 4s ease-in-out infinite;
+  --animate-pop: mq-pop .45s cubic-bezier(.2, 1.4, .4, 1) both;
+  --animate-bounce-in: mq-bounce-in .7s cubic-bezier(.2, 1.6, .4, 1) both;
+  --animate-wiggle: mq-wiggle .5s ease-in-out;
+  --animate-shimmer: mq-shimmer 2.2s linear infinite;
+  --animate-glow: mq-glow 2.4s ease-in-out infinite;
+  --animate-spin-slow: spin 12s linear infinite;
+}
 
 :root {
-  font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-  color: #edf5ff;
-  background: #071426;
+  color: var(--color-mq-ink);
+  background: var(--color-mq-night);
+  font-family: var(--font-sans);
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
-  --panel: #10223a;
-  --muted: #91a7c1;
-  --blue: #26a6f7;
-  --cyan: #45e0df;
-  --orange: #ff9c38;
+  -webkit-tap-highlight-color: transparent;
 }
-* { box-sizing: border-box; }
-body { margin: 0; min-width: 320px; min-height: 100vh; background: radial-gradient(circle at 80% 0%, #12345a 0, #071426 48%); }
-button { font: inherit; cursor: pointer; }
-button:focus-visible, input:focus-visible { outline: 3px solid var(--cyan); outline-offset: 3px; }
+
+body {
+  margin: 0;
+  min-width: 320px;
+  min-height: 100vh;
+  background:
+    radial-gradient(1200px 600px at 85% -10%, rgba(13, 110, 253, .35), transparent 60%),
+    radial-gradient(900px 500px at -10% 30%, rgba(0, 229, 255, .12), transparent 60%),
+    radial-gradient(800px 600px at 50% 110%, rgba(255, 138, 0, .10), transparent 60%),
+    linear-gradient(180deg, #0b1b3b 0%, #06122a 100%);
+  background-attachment: fixed;
+}
+
+/* Campo de estrelas suave atrás de todo o app */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  background-image:
+    radial-gradient(1.5px 1.5px at 20px 30px, #fff, transparent),
+    radial-gradient(1px 1px at 120px 80px, #9be7ff, transparent),
+    radial-gradient(1.5px 1.5px at 200px 160px, #fff, transparent),
+    radial-gradient(1px 1px at 60px 200px, #ffcb57, transparent),
+    radial-gradient(1px 1px at 260px 40px, #fff, transparent);
+  background-size: 300px 240px;
+  opacity: .45;
+  animation: mq-twinkle 6s ease-in-out infinite alternate;
+}
+
+#root { position: relative; z-index: 1; }
+
+/* Regras de elemento ficam na camada base para que as utilitárias do Tailwind possam sobrescrevê-las. */
+@layer base {
+  button { cursor: pointer; }
+  button:focus-visible, input:focus-visible, select:focus-visible, a:focus-visible, summary:focus-visible {
+    outline: 3px solid var(--color-mq-cyan);
+    outline-offset: 3px;
+  }
+}
+
+@layer components {
+  .font-display { letter-spacing: .02em; }
+  /* Números e contas usam Inter (legível para crianças); Orbitron fica nos títulos. */
+  .num { font-family: var(--font-sans); font-weight: 800; font-variant-numeric: tabular-nums; letter-spacing: -.01em; }
+
+  .mq-panel {
+    position: relative;
+    border-radius: 1.75rem;
+    border: 1px solid rgba(0, 229, 255, .18);
+    background: linear-gradient(160deg, rgba(16, 41, 90, .92), rgba(11, 27, 59, .94));
+    box-shadow: 0 18px 40px rgba(0, 0, 0, .35), inset 0 1px 0 rgba(255, 255, 255, .06), inset 0 0 40px rgba(13, 110, 253, .12);
+  }
+
+  .mq-card {
+    border-radius: 1.25rem;
+    border: 1px solid rgba(220, 236, 255, .10);
+    background: rgba(6, 18, 42, .55);
+  }
+
+  /* Botões "chunky" com profundidade, como nas telas de exemplo do board */
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: .5rem;
+    border-radius: 1rem;
+    padding: .85rem 1.25rem;
+    font-weight: 800;
+    line-height: 1.1;
+    transition: transform .08s ease, box-shadow .08s ease, filter .15s ease;
+    user-select: none;
+  }
+  .btn:hover:not(:disabled) { filter: brightness(1.08); transform: translateY(-1px); }
+  .btn:active:not(:disabled) { transform: translateY(4px); }
+  .btn:disabled { opacity: .45; cursor: not-allowed; }
+
+  .btn-action { color: #2a1400; background: linear-gradient(180deg, #ffb347, #ff8a00); box-shadow: 0 6px 0 #b45c00, 0 10px 20px rgba(255, 138, 0, .35); }
+  .btn-action:active:not(:disabled) { box-shadow: 0 2px 0 #b45c00; }
+  .btn-blue { color: #fff; background: linear-gradient(180deg, #3d8bff, #0d6efd); box-shadow: 0 6px 0 #0846a8, 0 10px 20px rgba(13, 110, 253, .35); }
+  .btn-blue:active:not(:disabled) { box-shadow: 0 2px 0 #0846a8; }
+  .btn-cyan { color: #03202a; background: linear-gradient(180deg, #6ff3ff, #00e5ff); box-shadow: 0 6px 0 #00879a, 0 10px 20px rgba(0, 229, 255, .3); }
+  .btn-cyan:active:not(:disabled) { box-shadow: 0 2px 0 #00879a; }
+  .btn-green { color: #fff; background: linear-gradient(180deg, #4fdc57, #21c02b); box-shadow: 0 6px 0 #11801a; }
+  .btn-ghost { color: var(--color-mq-ink); background: rgba(13, 110, 253, .16); border: 1px solid rgba(0, 229, 255, .25); box-shadow: 0 4px 0 rgba(0, 0, 0, .35); }
+
+  /* Peça de resposta (Desafio de Tabuada do board) */
+  .tile {
+    border-radius: 1rem;
+    border: 2px solid #2f7bff;
+    background: linear-gradient(180deg, #11307a, #0a1f55);
+    color: #fff;
+    box-shadow: 0 5px 0 #061640;
+    font-family: var(--font-sans);
+    font-weight: 800;
+    font-variant-numeric: tabular-nums;
+    transition: transform .08s ease, box-shadow .08s ease, background .2s ease, border-color .2s ease;
+  }
+  .tile:hover:not(:disabled) { border-color: var(--color-mq-cyan); transform: translateY(-2px); }
+  .tile:active:not(:disabled) { transform: translateY(3px); box-shadow: 0 2px 0 #061640; }
+  .tile-correct { border-color: #6dff74; background: linear-gradient(180deg, #4fdc57, #21c02b); box-shadow: 0 5px 0 #11801a, 0 0 24px rgba(33, 192, 43, .55); }
+  .tile-try { border-color: var(--color-mq-orange); background: linear-gradient(180deg, #5a3510, #3b2208); box-shadow: 0 5px 0 #2a1704; }
+
+  .chip {
+    display: inline-flex;
+    align-items: center;
+    gap: .375rem;
+    border-radius: 999px;
+    padding: .3rem .75rem;
+    font-size: .75rem;
+    font-weight: 800;
+    border: 1px solid rgba(0, 229, 255, .3);
+    background: rgba(0, 229, 255, .1);
+    color: #b9f6ff;
+  }
+
+  .xp-track { height: .75rem; border-radius: 999px; background: rgba(6, 18, 42, .8); border: 1px solid rgba(0, 229, 255, .25); overflow: hidden; }
+  .xp-fill {
+    height: 100%;
+    border-radius: 999px;
+    background: linear-gradient(90deg, #21c02b, #00e5ff, #21c02b);
+    background-size: 200% 100%;
+    animation: var(--animate-shimmer);
+    transition: width .6s cubic-bezier(.2, 1, .3, 1);
+  }
+
+  .mascot-shadow { filter: drop-shadow(0 12px 18px rgba(0, 0, 0, .45)) drop-shadow(0 0 18px rgba(0, 229, 255, .25)); }
+  .item-locked { filter: grayscale(1) brightness(.55); opacity: .55; }
+
+  /* Cartas 3D do jogo da memória */
+  .flip { perspective: 900px; }
+  .flip-inner { display: block; position: relative; width: 100%; height: 100%; transition: transform .5s cubic-bezier(.2, .9, .3, 1.2); transform-style: preserve-3d; }
+  .flip-inner.is-up { transform: rotateY(180deg); }
+  .flip-face { position: absolute; inset: 0; backface-visibility: hidden; -webkit-backface-visibility: hidden; border-radius: 1rem; display: flex; align-items: center; justify-content: center; text-align: center; padding: .5rem; }
+  .flip-front { transform: rotateY(180deg); }
+
+  .stagger > * { animation: var(--animate-pop); }
+  .stagger > *:nth-child(2) { animation-delay: .05s; }
+  .stagger > *:nth-child(3) { animation-delay: .1s; }
+  .stagger > *:nth-child(4) { animation-delay: .15s; }
+  .stagger > *:nth-child(5) { animation-delay: .2s; }
+  .stagger > *:nth-child(6) { animation-delay: .25s; }
+  .stagger > *:nth-child(7) { animation-delay: .3s; }
+  .stagger > *:nth-child(8) { animation-delay: .35s; }
+}
+
+/* Confete de comemoração */
+.confetti { position: fixed; inset: 0; pointer-events: none; overflow: hidden; z-index: 60; }
+.confetti i { position: absolute; top: -20px; width: 10px; height: 14px; border-radius: 3px; animation: mq-confetti 1.8s cubic-bezier(.2, .6, .4, 1) forwards; }
+
+@keyframes mq-float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
+@keyframes mq-pop { from { opacity: 0; transform: translateY(12px) scale(.96); } to { opacity: 1; transform: none; } }
+@keyframes mq-bounce-in { 0% { opacity: 0; transform: scale(.4) rotate(-8deg); } 60% { opacity: 1; transform: scale(1.08) rotate(3deg); } 100% { transform: scale(1) rotate(0); } }
+@keyframes mq-wiggle { 0%, 100% { transform: rotate(0); } 25% { transform: rotate(-4deg); } 75% { transform: rotate(4deg); } }
+@keyframes mq-shimmer { from { background-position: 0% 0; } to { background-position: 200% 0; } }
+@keyframes mq-glow { 0%, 100% { box-shadow: 0 0 0 0 rgba(0, 229, 255, .45); } 50% { box-shadow: 0 0 0 10px rgba(0, 229, 255, 0); } }
+@keyframes mq-twinkle { from { opacity: .25; } to { opacity: .6; } }
+@keyframes mq-confetti {
+  0% { transform: translate3d(0, 0, 0) rotate(0); opacity: 1; }
+  100% { transform: translate3d(var(--dx, 0), 105vh, 0) rotate(var(--rot, 540deg)); opacity: .9; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: .001ms !important; animation-iteration-count: 1 !important; transition-duration: .001ms !important; }
+  .confetti { display: none; }
+}

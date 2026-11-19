@@ -9,7 +9,7 @@ type InstallPromptEvent = Event & {
 export default function PwaStatus() {
   const [online, setOnline] = useState(() => typeof navigator === 'undefined' ? true : navigator.onLine);
   const [installEvent, setInstallEvent] = useState<InstallPromptEvent | null>(null);
-  const [installed, setInstalled] = useState(() => typeof window !== 'undefined' && window.matchMedia('(display-mode: standalone)').matches);
+  const [installed, setInstalled] = useState(() => typeof window !== 'undefined' && typeof window.matchMedia === 'function' && window.matchMedia('(display-mode: standalone)').matches);
   const [updateAvailable, setUpdateAvailable] = useState(false);
   const [updateSW, setUpdateSW] = useState<((reloadPage?: boolean) => Promise<void>) | null>(null);
 
@@ -53,13 +53,16 @@ export default function PwaStatus() {
     setInstallEvent(null);
   }
 
-  return <section aria-label="Estado do aplicativo" className="mt-4 flex flex-wrap items-center gap-2 text-xs">
-    <span role="status" className={'rounded-full border px-3 py-2 font-semibold ' + (online ? 'border-cyan-300/20 bg-cyan-300/10 text-cyan-100' : 'border-orange-300/30 bg-orange-300/10 text-orange-100')}>
+  if (online && !(installEvent && !installed) && !updateAvailable) {
+    return <p role="status" className="sr-only">Conectado</p>;
+  }
+
+  return <section aria-label="Estado do aplicativo" className="mb-4 flex flex-wrap items-center gap-2 text-xs animate-pop">
+    <span role="status" className={'rounded-full border px-3 py-2 font-semibold ' + (online ? 'border-mq-cyan/30 bg-mq-cyan/10 text-[#b9f6ff]' : 'border-mq-orange/40 bg-mq-orange/15 text-mq-yellow')}>
       {online ? '● Conectado' : '● Sem internet · recursos já carregados podem funcionar'}
     </span>
-    <span className="rounded-full border border-white/10 px-3 py-2 text-slate-300">Versão 0.1.0-beta.1</span>
-    {installed && <span className="rounded-full border border-emerald-300/20 px-3 py-2 text-emerald-200">Instalado</span>}
-    {installEvent && !installed && <button type="button" onClick={() => void install()} className="rounded-full bg-cyan-300 px-3 py-2 font-bold text-slate-950">Instalar aplicativo</button>}
-    {updateAvailable && <button type="button" onClick={() => { if (updateSW) void updateSW(true); }} className="rounded-full bg-orange-400 px-3 py-2 font-bold text-slate-950">Atualizar aplicativo</button>}
+    {installed && <span className="rounded-full border border-mq-green/40 px-3 py-2 text-[#7dff84]">Instalado</span>}
+    {installEvent && !installed && <button type="button" onClick={() => void install()} className="btn btn-cyan px-3 py-2 text-xs">Instalar aplicativo</button>}
+    {updateAvailable && <button type="button" onClick={() => { if (updateSW) void updateSW(true); }} className="btn btn-action px-3 py-2 text-xs">Atualizar aplicativo</button>}
   </section>;
 }

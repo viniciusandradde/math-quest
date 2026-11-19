@@ -11,7 +11,7 @@
 - Indicação de conexão e aviso de atualização disponível.
 - Sem cadastro, backend, anúncios ou sincronização.
 
-**Limitações:** os seis desafios estratégicos ainda não são persistidos no histórico de aprendizagem; a área de responsáveis resume apenas a prática de multiplicação. Os ícones atuais são SVG, cuja aceitação para instalação varia entre navegadores. Para distribuição Android ampla, criar e validar ícones PNG 192 e 512 pixels. A indicação "sem internet" não garante que todos os recursos foram armazenados em cache; isso exige teste real após a primeira visita online.
+**Limitações:** a área de responsáveis resume desafios, memória e aquecimento, mas ainda não mostra o diagnóstico nem recomendações. Os ícones atuais são SVG, cuja aceitação para instalação varia entre navegadores. Para distribuição Android ampla, criar e validar ícones PNG 192 e 512 pixels. A indicação "sem internet" não garante que todos os recursos foram armazenados em cache; isso exige teste real após a primeira visita online.
 
 ## Critérios de aceite obrigatórios
 

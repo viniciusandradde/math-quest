@@ -84,10 +84,75 @@ export const challenges: Challenge[] = [
   }
 ];
 
-export function checkChallengeAnswer(challenge: Challenge, raw: string): boolean {
+/** Converte a resposta digitada em número, aceitando vírgula ou ponto decimal. */
+export function parseChallengeResponse(raw: string): number | null {
   const normalized = raw.trim().replace(/\s/g, '').replace(',', '.');
-  if (!normalized) return false;
+  if (!normalized) return null;
   const value = Number(normalized);
-  if (!Number.isFinite(value)) return false;
+  return Number.isFinite(value) ? value : null;
+}
+
+export function checkChallengeAnswer(challenge: Challenge, raw: string): boolean {
+  const value = parseChallengeResponse(raw);
+  if (value === null) return false;
   return Math.abs(value - challenge.answer) <= (challenge.tolerance ?? 0);
+}
+
+/**
+ * Evidência de uma tentativa. Guarda apenas o valor numérico respondido (nunca texto livre),
+ * útil para o educador identificar estratégias equivocadas sem coletar dados pessoais.
+ */
+export type ChallengeAttempt = {
+  challengeId: string;
+  correct: boolean;
+  value: number | null;
+  answeredAt: string;
+};
+
+export function buildChallengeAttempt(challenge: Challenge, raw: string, answeredAt = new Date().toISOString()): ChallengeAttempt {
+  return { challengeId: challenge.id, correct: checkChallengeAnswer(challenge, raw), value: parseChallengeResponse(raw), answeredAt };
+}
+
+export type ChallengeStatus = 'not-started' | 'in-progress' | 'solved';
+
+export type ChallengeProgress = {
+  id: string;
+  title: string;
+  area: string;
+  attempts: number;
+  correct: number;
+  status: ChallengeStatus;
+  lastAnsweredAt?: string;
+};
+
+export type ChallengeSummary = {
+  total: number;
+  attempted: number;
+  solved: number;
+  attempts: number;
+  correct: number;
+  accuracy: number;
+  items: ChallengeProgress[];
+};
+
+/** Resume as tentativas por desafio. "Resolvido" indica ao menos um acerto, não retenção. */
+export function summarizeChallengeAttempts(attempts: ChallengeAttempt[], bank: Challenge[] = challenges): ChallengeSummary {
+  const items = bank.map(challenge => {
+    const own = attempts.filter(item => item.challengeId === challenge.id);
+    const correct = own.filter(item => item.correct).length;
+    const lastAnsweredAt = own.map(item => item.answeredAt).sort().at(-1);
+    const status: ChallengeStatus = correct > 0 ? 'solved' : own.length > 0 ? 'in-progress' : 'not-started';
+    return { id: challenge.id, title: challenge.title, area: challenge.area, attempts: own.length, correct, status, lastAnsweredAt };
+  });
+  const totalAttempts = items.reduce((sum, item) => sum + item.attempts, 0);
+  const totalCorrect = items.reduce((sum, item) => sum + item.correct, 0);
+  return {
+    total: bank.length,
+    attempted: items.filter(item => item.attempts > 0).length,
+    solved: items.filter(item => item.status === 'solved').length,
+    attempts: totalAttempts,
+    correct: totalCorrect,
+    accuracy: totalAttempts ? Math.round((totalCorrect / totalAttempts) * 100) : 0,
+    items
+  };
 }
