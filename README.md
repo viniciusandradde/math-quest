@@ -114,7 +114,7 @@ A proposta é conectar duas competências:
 | Frontend | React + TypeScript | Interface e componentes |
 | Build | Vite | Desenvolvimento e compilação |
 | Estilos | Tailwind CSS | Design responsivo |
-| Jogos | Phaser | Experiências interativas 2D |
+| Jogos | Phaser (integração progressiva) | Motor previsto para experiências interativas 2D |
 | Estado | Zustand | Estado da experiência |
 | Persistência local | Dexie + IndexedDB | Perfil e progresso no dispositivo |
 | PWA | vite-plugin-pwa | Instalação e recursos offline |
@@ -152,7 +152,7 @@ Consulte [docs/PRIVACY.md](docs/PRIVACY.md).
 
 ## Executar localmente
 
-Requisitos: Node.js 22 ou superior e npm 10 ou superior.
+Requisitos: Node.js 22.12 ou superior e npm 10 ou superior.
 
 ~~~bash
 git clone https://github.com/viniciusandradde/math-quest.git
