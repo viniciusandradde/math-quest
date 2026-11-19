@@ -85,7 +85,7 @@ O projeto define **durações**, não **janelas de horário**:
 | 1 | **O dia vira em UTC.** No Brasil (UTC−3), o limite diário zera às **21h**, liberando novas rodadas na hora de dormir | `today = () => new Date().toISOString().slice(0, 10)` (wellbeing.js:82) | Usar a data local (ano-mês-dia do fuso do aparelho) |
 | 2 | **Portão parental com tabuada de 1 dígito** (6×7, 8×9…). Crianças a partir de cerca de 8 anos resolvem, e num app de matemática isso é exatamente o que elas treinam | `parentQuestions` (:78), `renderGate` (:233) | 3 a 6 anos: segurar 3 s + conta de dois dígitos. 11 a 13 anos: **PIN de 4 dígitos** criado pelo adulto (seção 5.5) |
 | 3 | **Personagens licenciados** nas missões ("Homem de Ferro", "Capitão América"). É risco de marca num produto comercial | :34–35 | Usar "seu super-herói favorito", "seu boneco preferido" |
-| 4 | **Linguagem familiar restrita** ("mamãe ou o papai") | :56, :73 | "um adulto", "alguém da família" |
+| 4 | **Linguagem familiar restrita** ("mamãe ou o papai") | :56, :75 | "um adulto", "alguém da família" |
 | 5 | **Nome da criança** armazenado e falado | `childName` (:89, :102) | No Math Quest, não coletar nome (política de privacidade atual); usar "explorador(a)" ou nada |
 | 6 | **"Nada na hora de dormir" não é aplicado** | texto no painel (:277–279) | Janela de horários configurável (seção 5.3) |
 | 7 | **Relógio do aparelho** pode ser adiantado para encurtar a pausa | relógio de parede (:187) | Limitação aceitável num app sem servidor; documentar para os pais |
