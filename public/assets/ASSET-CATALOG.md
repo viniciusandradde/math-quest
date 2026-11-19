@@ -17,6 +17,17 @@
   - Uso: referência visual para o cenário do laboratório.
   - Nota: a prévia está hospedada na biblioteca/CDN do Higgsfield; o SVG vetorial é o asset versionado no GitHub nesta etapa.
 
+## Personagens complementares
+
+- Personagens auxiliares Ponto e Lumi: [companions.svg](../characters/companions.svg)
+
+## Materiais físicos para impressão
+
+- [Missão 01 — Grupos iguais](printables/mission-01-equal-groups.svg)
+- [Missão 02 — Matrizes](printables/mission-02-arrays.svg)
+- [Missão 03 — Problemas de aventura](printables/mission-03-word-problems.svg)
+- Orientações pedagógicas e de impressão: [docs/PRINTABLES.md](../../../docs/PRINTABLES.md)
+
 ## Itens de jogo
 
 - Colecionáveis iniciais: [collectibles.svg](../items/collectibles.svg)
