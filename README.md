@@ -48,7 +48,8 @@ O universo do Math Quest combina robótica, exploração, laboratório, tecnolog
 **Assinatura:** Aprender matemática. Resolver desafios. Criar possibilidades.\n\n### Biblioteca visual inicial\n\n- [Expressões e poses do mascote](public/assets/characters/mascot-expressions.svg)\n- [Laboratório matemático](public/assets/environments/math-lab.svg)
 - [Fábrica de robôs](public/assets/environments/robot-factory.svg)
 - [Base espacial](public/assets/environments/space-base.svg)
-- [Ilha dos desafios](public/assets/environments/challenge-island.svg)\n- [Itens colecionáveis](public/assets/items/collectibles.svg)\n- [Catálogo de assets](public/assets/ASSET-CATALOG.md)\n\nA identidade oficial usa o mascote robô frontal com visor azul-marinho, olhos e sorriso ciano, fones laranja, antena e aro tecnológico azul. Ilustrações promocionais não substituem o logo mestre.
+- [Ilha dos desafios](public/assets/environments/challenge-island.svg)\n- [Itens colecionáveis](public/assets/items/collectibles.svg)\n- [Catálogo de assets](public/assets/ASSET-CATALOG.md)
+- [Materiais físicos e orientações de impressão](docs/PRINTABLES.md)\n\nA identidade oficial usa o mascote robô frontal com visor azul-marinho, olhos e sorriso ciano, fones laranja, antena e aro tecnológico azul. Ilustrações promocionais não substituem o logo mestre.
 
 ## Metodologia de aprendizagem
 
