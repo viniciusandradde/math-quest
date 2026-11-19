@@ -25,7 +25,10 @@
 
 - [Missão 01 — Grupos iguais](printables/mission-01-equal-groups.svg)
 - [Missão 02 — Matrizes](printables/mission-02-arrays.svg)
-- [Missão 03 — Problemas de aventura](printables/mission-03-word-problems.svg)
+- [Missão 03 — Problemas de aventura](printables/mission-03-word-problems.svg) — retomada básica, não representa o nível principal.
+- [Missão 04 — Operação Resgate](printables/mission-04-strategy-level.svg) — nível principal do 5º ano.
+- [Missão 05 — Geometria e lógica](printables/mission-05-geometry-logic.svg) — nível principal do 5º ano.
+- [Gabarito do educador](../../../docs/CHALLENGE-ANSWER-KEY.md)
 - Orientações pedagógicas e de impressão: [docs/PRINTABLES.md](../../../docs/PRINTABLES.md)
 
 ## Itens de jogo
