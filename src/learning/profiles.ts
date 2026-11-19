@@ -17,7 +17,7 @@ export const ageProfiles: AgeProfile[] = [
     ageRange: '3 a 6 anos',
     title: 'Pequeno Explorador',
     description: 'Brincadeiras com quantidades, formas e sequências, com um professor de voz que explica tudo bem devagar.',
-    highlights: ['Contar tocando em cada objeto', 'Achar o igual e as formas', 'Mais e menos, sequências e juntar']
+    highlights: ['10 brincadeiras com 7 níveis cada', 'Contar, comparar, juntar e tirar', 'Igual, diferente, tamanhos, formas e sequências']
   },
   {
     id: 'age-11-13',

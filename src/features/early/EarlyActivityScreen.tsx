@@ -30,21 +30,32 @@ function Dots({ n }: { n: number }) {
   </span>;
 }
 
-function ItemGrid({ item, count, offset = 0, counted, highlight, onTap, size = 'h-14 w-14' }: {
+function ItemGrid({ item, count, offset = 0, counted, highlight, onTap, size, fadedFrom, compact = false }: {
   item: CountItem; count: number; offset?: number; counted?: Map<number, number>; highlight?: number; onTap?: (index: number) => void; size?: string;
+  /** Índice a partir do qual os objetos "foram embora" (Tirar): ficam clarinhos e não contam. */
+  fadedFrom?: number;
+  /** Grupos lado a lado (comparar 3 grupos): sem espaçamento extra. */
+  compact?: boolean;
 }) {
-  return <div className="flex flex-wrap justify-center gap-2">
+  const iconSize = size ?? (count > 10 ? 'h-9 w-9' : count > 6 ? 'h-11 w-11' : 'h-14 w-14');
+  return <div className={'flex flex-wrap justify-center ' + (compact ? 'gap-0.5' : 'gap-2')}>
     {Array.from({ length: count }, (_, i) => {
       const index = offset + i;
+      if (fadedFrom !== undefined && index >= fadedFrom) {
+        return <span key={index} className="relative rounded-2xl p-1.5" aria-label="Foi embora">
+          <Item id={item} className={iconSize + ' opacity-25 grayscale'} />
+          <span aria-hidden="true" className="absolute -right-1 -top-1 text-lg font-black text-mq-orange">↗</span>
+        </span>;
+      }
       const number = counted?.get(index);
       const lit = number !== undefined || highlight === index + 1;
       const content = <>
-        <Item id={item} className={size + ' transition ' + (lit ? 'scale-110' : '')} />
+        <Item id={item} className={iconSize + ' transition ' + (lit ? 'scale-110' : '')} />
         {number !== undefined && <span className="absolute -right-1 -top-1 flex h-7 w-7 items-center justify-center rounded-full bg-mq-green text-sm font-black text-white shadow animate-bounce-in">{number}</span>}
       </>;
       return onTap
         ? <button key={index} type="button" onClick={() => onTap(index)} aria-label={number !== undefined ? 'Contado: ' + number : 'Tocar para contar'} className={'relative rounded-2xl p-1.5 transition ' + (lit ? 'bg-mq-yellow/25 shadow-[0_0_18px_rgba(255,203,87,.5)]' : 'bg-white/5 hover:bg-white/10')}>{content}</button>
-        : <span key={index} className={'relative rounded-2xl p-1 ' + (lit ? 'bg-mq-yellow/25' : '')}>{content}</span>;
+        : <span key={index} className={'relative rounded-2xl ' + (compact ? 'p-0' : 'p-1') + (lit ? ' bg-mq-yellow/25' : '')}>{content}</span>;
     })}
   </div>;
 }
@@ -65,7 +76,7 @@ export default function EarlyActivityScreen({ activityId, level, onBack, onAnswe
   const question = round[index];
   const finished = index >= round.length;
   const stars = results.filter(Boolean).length;
-  const countWords = useMemo(() => countAloud(10), []);
+  const countWords = useMemo(() => countAloud(20), []);
   const scene = question?.scene;
 
   // Explica a brincadeira na primeira pergunta; depois, só o pedido.
@@ -93,7 +104,7 @@ export default function EarlyActivityScreen({ activityId, level, onBack, onAnswe
     next.set(itemIndex, number);
     setCounted(next);
     sfx.tap();
-    const total = scene?.kind === 'count' ? scene.count : scene?.kind === 'join' ? scene.a + scene.b : 0;
+    const total = scene?.kind === 'count' ? scene.count : scene?.kind === 'join' ? scene.a + scene.b : scene?.kind === 'take' ? scene.total - scene.away : 0;
     const word = countWords[number - 1] ?? String(number);
     voice.say(number === total ? [word, 'Agora toque no número.'] : [word]);
   }
@@ -133,10 +144,13 @@ export default function EarlyActivityScreen({ activityId, level, onBack, onAnswe
   }
 
   function optionContent(option: EarlyOption) {
-    if (option.token) return <Shape token={option.token} className="h-20 w-20 sm:h-24 sm:w-24" />;
-    if (option.number !== undefined) return <span className="flex flex-col items-center"><span className="num text-5xl text-white">{option.number}</span>{level === 1 && <Dots n={option.number} />}</span>;
+    if (option.token) return <Shape token={option.token} className={question.options.length >= 4 ? 'h-16 w-16 sm:h-24 sm:w-24' : 'h-20 w-20 sm:h-24 sm:w-24'} />;
+    if (option.scale !== undefined && scene && 'item' in scene) return <Item id={scene.item} style={{ width: Math.round(84 * option.scale), height: Math.round(84 * option.scale) }} />;
+    if (option.number !== undefined) return <span className="flex flex-col items-center"><span className="num text-5xl text-white">{option.number}</span>{level <= 2 && option.number <= 5 && <Dots n={option.number} />}</span>;
     return null;
   }
+
+  const optionGrid = (count: number) => (count === 2 || count === 4 ? 'grid-cols-2' : 'grid-cols-3');
 
   function optionClass(optionIndex: number) {
     if (solved && optionIndex === question.answerIndex) return 'tile-correct animate-bounce-in';
@@ -167,24 +181,34 @@ export default function EarlyActivityScreen({ activityId, level, onBack, onAnswe
           <ItemGrid item={scene.item} count={scene.b} offset={scene.a} counted={counted} highlight={highlight} onTap={tapToCount} size="h-12 w-12" />
         </div>}
         {scene.kind === 'pattern' && <div className="flex flex-wrap items-center justify-center gap-1 sm:gap-1.5">
-          {scene.sequence.map((token, i) => <Shape key={i} token={token} className="h-10 w-10 sm:h-16 sm:w-16" />)}
-          <span className="flex h-10 w-10 items-center justify-center rounded-xl border-2 border-dashed border-mq-yellow text-xl font-black text-mq-yellow animate-glow sm:h-16 sm:w-16 sm:text-2xl">?</span>
+          {scene.sequence.map((token, i) => {
+            const cell = scene.sequence.length >= 7 ? 'h-8 w-8 sm:h-14 sm:w-14' : 'h-10 w-10 sm:h-16 sm:w-16';
+            return i === scene.gap
+              ? <span key={i} className={'flex items-center justify-center rounded-xl border-2 border-dashed border-mq-yellow text-xl font-black text-mq-yellow animate-glow sm:text-2xl ' + cell}>?</span>
+              : <Shape key={i} token={token} className={cell} />;
+          })}
         </div>}
-        {scene.kind === 'shapes' && <p className="text-center text-2xl font-black text-white">{question.prompt}</p>}
-        {scene.kind === 'compare' && <p className="text-center text-2xl font-black text-white">{question.prompt}</p>}
+        {scene.kind === 'neighbors' && <div className="flex items-center justify-center gap-2" aria-label="Fila de números">
+          {scene.track.map((n, i) => n === null
+            ? <span key={i} className="num flex h-14 w-14 items-center justify-center rounded-2xl border-2 border-dashed border-mq-yellow text-2xl text-mq-yellow animate-glow">?</span>
+            : <span key={i} className="num flex h-14 w-14 items-center justify-center rounded-2xl bg-white/90 text-2xl text-[#0b2a6b] shadow-[0_4px_0_rgba(0,0,0,.3)]">{n}</span>)}
+        </div>}
+        {scene.kind === 'take' && <ItemGrid item={scene.item} count={scene.total} counted={counted} highlight={highlight} onTap={tapToCount} fadedFrom={scene.total - scene.away} />}
+        {(scene.kind === 'shapes' || scene.kind === 'compare' || scene.kind === 'odd' || scene.kind === 'sizes') && <p className="text-center text-2xl font-black text-white">{question.prompt}</p>}
       </div>
 
       {scene.kind === 'compare'
-        ? <div className="mt-4 grid grid-cols-2 gap-3">
+        ? <div className={'mt-4 grid gap-3 ' + (scene.groups.length === 3 ? 'grid-cols-3' : 'grid-cols-2')}>
           {question.options.map((option, i) => {
-            const amount = option.side === 'left' ? scene.left : scene.right;
-            return <button key={option.label} type="button" onClick={() => choose(i)} disabled={wrong.includes(i)} aria-label={option.label + ' com ' + amount}
-              className={'tile flex min-h-40 items-center justify-center p-3 ' + optionClass(i)}>
-              <ItemGrid item={scene.item} count={amount} highlight={0} size={amount > 6 ? 'h-8 w-8' : 'h-11 w-11'} />
+            const amount = scene.groups[option.group ?? 0];
+            const small = scene.groups.length === 3 ? (amount > 6 ? 'h-5 w-5' : 'h-7 w-7') : amount > 6 ? 'h-8 w-8' : 'h-11 w-11';
+            return <button key={option.label} type="button" onClick={() => choose(i)} disabled={wrong.includes(i)} aria-label={option.label}
+              className={'tile flex min-h-40 items-center justify-center p-2 ' + optionClass(i)}>
+              <ItemGrid item={scene.item} count={amount} highlight={0} size={small} compact={scene.groups.length === 3} />
             </button>;
           })}
         </div>
-        : <div className={'mt-4 grid gap-3 ' + (question.options.length === 2 ? 'grid-cols-2' : 'grid-cols-3')}>
+        : <div className={'mt-4 grid gap-3 ' + optionGrid(question.options.length)}>
           {question.options.map((option, i) => <button key={option.label} type="button" onClick={() => choose(i)} disabled={wrong.includes(i)} aria-label={option.label}
             className={'tile flex min-h-28 items-center justify-center p-3 ' + optionClass(i)}>{optionContent(option)}</button>)}
         </div>}

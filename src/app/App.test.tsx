@@ -47,7 +47,7 @@ describe('age profile gate', () => {
     fireEvent.click(await screen.findByRole('button', { name: 'Pequeno Explorador, 3 a 6 anos' }));
     expect(dbMock.saveAgeProfile).toHaveBeenCalledWith('age-3-6');
     const list = await screen.findByRole('list', { name: 'Brincadeiras' });
-    expect(within(list).getAllByRole('button')).toHaveLength(6);
+    expect(within(list).getAllByRole('button')).toHaveLength(10);
     expect(screen.getByText(/Oi! Eu sou o Robô/)).toBeInTheDocument();
     expect(screen.queryByRole('button', { name: /JOGAR/ })).not.toBeInTheDocument();
   });

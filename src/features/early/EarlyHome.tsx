@@ -6,11 +6,15 @@ import ActivityIcon from './ActivityIcon';
 
 const cardTone: Record<EarlyActivityId, string> = {
   igual: 'from-[#1d4fd8] to-[#0b2a6b] border-[#6ea8ff]/60',
+  diferente: 'from-[#b0306a] to-[#4a1030] border-[#ff7fb5]/60',
+  tamanhos: 'from-[#4d8a0a] to-[#1f3a04] border-[#a3e635]/60',
   contar: 'from-[#c45f00] to-[#5a2c00] border-mq-orange/70',
   comparar: 'from-[#a67700] to-[#4a3500] border-mq-yellow/70',
   formas: 'from-[#007a8a] to-[#03343d] border-mq-cyan/60',
   sequencias: 'from-[#178a22] to-[#0a3d10] border-mq-green/70',
-  juntar: 'from-[#4b3fd6] to-[#1d1760] border-[#9d94ff]/60'
+  vizinhos: 'from-[#0369a1] to-[#082f49] border-[#7dd3fc]/60',
+  juntar: 'from-[#4b3fd6] to-[#1d1760] border-[#9d94ff]/60',
+  tirar: 'from-[#c2410c] to-[#4a1a07] border-[#fdba74]/60'
 };
 
 const GREETING = ['Oi! Eu sou o Robô.', 'Vamos brincar com os números?', 'Toque em uma brincadeira.'];
