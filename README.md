@@ -24,7 +24,7 @@
 
 ## Sobre o Math Quest
 
-**Math Quest é uma plataforma de aprendizagem matemática baseada em jogos, desafios e progressão individual.** O primeiro percurso é dedicado à compreensão e ao domínio da multiplicação e das tabuadas de 1 a 10.
+**Math Quest é uma plataforma de aprendizagem matemática baseada em jogos, desafios e progressão individual.** O percurso inicial trabalha fundamentos da multiplicação e evolui para desafios de raciocínio adequados ao 5º ano, com extensão para a transição ao 6º ano.
 
 O produto foi concebido para crianças e pré-adolescentes, com experiência mobile-first, linguagem visual tecnológica e atividades que transformam conceitos matemáticos em missões, enigmas e experimentos.
 
@@ -50,7 +50,8 @@ O universo do Math Quest combina robótica, exploração, laboratório, tecnolog
 - [Base espacial](public/assets/environments/space-base.svg)
 - [Ilha dos desafios](public/assets/environments/challenge-island.svg)\n- [Itens colecionáveis](public/assets/items/collectibles.svg)\n- [Catálogo de assets](public/assets/ASSET-CATALOG.md)
 - [Materiais físicos e orientações de impressão](docs/PRINTABLES.md)
-- [Gabarito das missões avançadas](docs/CHALLENGE-ANSWER-KEY.md)\n\nA identidade oficial usa o mascote robô frontal com visor azul-marinho, olhos e sorriso ciano, fones laranja, antena e aro tecnológico azul. Ilustrações promocionais não substituem o logo mestre.
+- [Gabarito das missões avançadas](docs/CHALLENGE-ANSWER-KEY.md)
+- [Banco digital de desafios](src/learning/challenges.ts)\n\nA identidade oficial usa o mascote robô frontal com visor azul-marinho, olhos e sorriso ciano, fones laranja, antena e aro tecnológico azul. Ilustrações promocionais não substituem o logo mestre.
 
 ## Metodologia de aprendizagem
 
