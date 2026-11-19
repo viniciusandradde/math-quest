@@ -19,11 +19,11 @@
 - [x] Matrizes multiplicativas.
 - [ ] Comutatividade e decomposição.
 - [x] Materiais de retomada: grupos iguais e matrizes.
-- [x] Missões do nível 5º ano: operações em etapas, frações, decimais, área, perímetro e lógica.
-- [x] Banco digital inicial com 6 desafios e feedback explicativo.
 - [ ] Relação entre multiplicação e divisão.
 
 ## 0.4 — Jogos e missões
+- [x] Missões do nível 5º ano: operações em etapas, frações, decimais, área, perímetro e lógica.
+- [x] Banco digital inicial com 6 desafios e feedback explicativo.
 - [x] Tela de desafios estratégicos com resposta construída e explicação.
 - [ ] Memória matemática.
 - [ ] Circuito matemático.
