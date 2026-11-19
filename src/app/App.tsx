@@ -4,10 +4,11 @@ import { getProgressSummary, recordAnswer, saveDiagnostic } from '../lib/db';
 import DiagnosticScreen from '../features/diagnostic/DiagnosticScreen';
 import ArrayLab from '../features/lab/ArrayLab';
 import ChallengeScreen from '../features/challenges/ChallengeScreen';
+import MemoryScreen from '../features/memory/MemoryScreen';
 import PwaStatus from '../components/PwaStatus';
 import type { DiagnosticResult } from '../learning/diagnostic';
 
-type Screen = 'home' | 'diagnostic' | 'practice' | 'learn' | 'parent' | 'challenges';
+type Screen = 'home' | 'diagnostic' | 'practice' | 'learn' | 'parent' | 'challenges' | 'memory';
 const logo = import.meta.env.BASE_URL + 'brand/math-quest-logo.svg';
 
 export default function App() {
@@ -84,12 +85,14 @@ export default function App() {
           <div><p className="text-xs font-bold uppercase tracking-[.2em] text-cyan-300">Desafios de raciocínio</p><h2 className="mt-2 text-2xl font-black">Missões para pensar de verdade</h2><p className="mt-2 text-sm text-slate-400">Problemas com várias etapas, frações, decimais, geometria e lógica. Resolva no papel e explique sua estratégia.</p></div>
           <span className="rounded-full border border-orange-300/30 bg-orange-300/10 px-3 py-1 text-xs font-bold text-orange-200">5º ano · extensão</span>
         </div>
-        <div className="mt-5 grid gap-3 sm:grid-cols-2">
+        <div className="mt-5 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
           {[{n:'04',title:'Operação Resgate',desc:'Operações combinadas, frações e situações com dinheiro.',href:import.meta.env.BASE_URL+'assets/printables/mission-04-strategy-level.svg'},{n:'05',title:'Geometria e lógica',desc:'Área, perímetro, sequências e frações aplicadas.',href:import.meta.env.BASE_URL+'assets/printables/mission-05-geometry-logic.svg'}].map(item=><a key={item.n} href={item.href} target="_blank" rel="noreferrer" className="rounded-2xl border border-white/10 bg-slate-950/30 p-4 transition hover:border-cyan-300/50"><span className="text-xs font-bold text-cyan-300">MISSÃO {item.n}</span><h3 className="mt-2 font-extrabold">{item.title}</h3><p className="mt-1 text-sm text-slate-400">{item.desc}</p><span className="mt-4 inline-block text-sm font-bold text-orange-300">Abrir atividade para imprimir ↗</span></a>)}
+          <button type="button" onClick={() => setScreen('memory')} className="rounded-2xl border border-orange-300/30 bg-orange-300/5 p-4 text-left transition hover:border-orange-300/60"><span className="text-xs font-bold text-orange-300">JOGO NO APP</span><h3 className="mt-2 font-extrabold">Memória matemática</h3><p className="mt-1 text-sm text-slate-400">Associe frações, porcentagens, decimais, área e perímetro aos resultados.</p><span className="mt-4 inline-block text-sm font-bold text-orange-300">Jogar agora →</span></button>
         </div>
       </section>}
 
       {screen === 'challenges' && <ChallengeScreen onBack={() => setScreen('home')} />}
+      {screen === 'memory' && <MemoryScreen onBack={() => setScreen('home')} />}
       {screen === 'diagnostic' && <DiagnosticScreen onBack={() => setScreen('home')} onComplete={(result: DiagnosticResult) => { void saveDiagnostic(result); }} />}
       {screen === 'practice' && <section className="mx-auto mt-8 max-w-2xl rounded-3xl border border-white/10 bg-[#10223a] p-6 sm:p-9">
         <button onClick={() => setScreen('home')} className="text-sm text-cyan-300">← Voltar ao laboratório</button>
@@ -127,8 +130,8 @@ export default function App() {
         </div>
       </section>}
 
-      <nav className="mx-auto mt-8 flex max-w-xl justify-center gap-2 rounded-2xl border border-white/10 bg-[#0b1a2c] p-2">
-        {([['home','Início'],['diagnostic','Diagnóstico'],['challenges','Desafios'],['practice','Aquecimento'],['learn','Aprender'],['parent','Responsáveis']] as [Screen,string][]).map(([id,label])=><button key={id} onClick={() => setScreen(id)} className={'rounded-xl px-3 py-2 text-xs font-bold sm:px-4 ' + (screen === id ? 'bg-blue-500 text-white' : 'text-slate-400 hover:bg-white/5 hover:text-white')}>{label}</button>)}
+      <nav aria-label="Navegação principal" className="mx-auto mt-8 flex max-w-2xl flex-wrap justify-center gap-1 rounded-2xl sm:gap-2 border border-white/10 bg-[#0b1a2c] p-2">
+        {([['home','Início'],['diagnostic','Diagnóstico'],['challenges','Desafios'],['memory','Memória'],['practice','Aquecimento'],['learn','Aprender'],['parent','Responsáveis']] as [Screen,string][]).map(([id,label])=><button key={id} onClick={() => setScreen(id)} aria-current={screen === id ? 'page' : undefined} className={'rounded-xl px-3 py-2 text-xs font-bold sm:px-4 ' + (screen === id ? 'bg-blue-500 text-white' : 'text-slate-400 hover:bg-white/5 hover:text-white')}>{label}</button>)}
       </nav>
       <footer className="mt-8 text-center text-xs text-slate-500">Math Quest · Um produto educacional da VSA Tecnologia · 0.1.0-beta.1</footer>
     </main>
