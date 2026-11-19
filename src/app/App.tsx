@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from 'react';
 import { buildChoices, buildFact } from '../learning/multiplication';
 import { getProgressSummary, recordAnswer, saveDiagnostic } from '../lib/db';
 import DiagnosticScreen from '../features/diagnostic/DiagnosticScreen';
+import ArrayLab from '../features/lab/ArrayLab';
 import type { DiagnosticResult } from '../learning/diagnostic';
 
 type Screen = 'home' | 'diagnostic' | 'practice' | 'learn' | 'parent';
@@ -98,6 +99,7 @@ export default function App() {
           {[{n:'3 grupos',d:'Quantos grupos iguais existem?'},{n:'4 itens',d:'Quantos itens há em cada grupo?'},{n:'12 itens',d:'3 × 4 = 12 no total.'}].map((item,i)=><article key={item.n} className="rounded-2xl bg-slate-950/40 p-5"><span className="text-xs font-bold text-cyan-300">ETAPA 0{i+1}</span><h2 className="mt-2 text-2xl font-black">{item.n}</h2><p className="mt-2 text-sm text-slate-400">{item.d}</p></article>)}
         </div>
         <div className="mt-6 rounded-2xl border border-orange-300/20 bg-orange-300/5 p-5"><p className="text-sm text-orange-200">Experimente pensar assim:</p><p className="mt-2 text-2xl font-black">4 + 4 + 4 = 3 × 4 = 12</p><p className="mt-2 text-sm text-slate-300">A multiplicação é uma forma de representar a adição de parcelas iguais.</p></div>
+        <ArrayLab />
         <button onClick={() => setScreen('practice')} className="mt-6 rounded-xl bg-orange-400 px-5 py-3 font-bold text-slate-950">Praticar agora</button>
       </section>}
 
