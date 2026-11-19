@@ -130,7 +130,7 @@ export default function App() {
       <nav className="mx-auto mt-8 flex max-w-xl justify-center gap-2 rounded-2xl border border-white/10 bg-[#0b1a2c] p-2">
         {([['home','Início'],['diagnostic','Diagnóstico'],['challenges','Desafios'],['practice','Aquecimento'],['learn','Aprender'],['parent','Responsáveis']] as [Screen,string][]).map(([id,label])=><button key={id} onClick={() => setScreen(id)} className={'rounded-xl px-3 py-2 text-xs font-bold sm:px-4 ' + (screen === id ? 'bg-blue-500 text-white' : 'text-slate-400 hover:bg-white/5 hover:text-white')}>{label}</button>)}
       </nav>
-      <footer className="mt-8 text-center text-xs text-slate-500">Math Quest · Um produto educacional da VSA Tecnologia · 0.1.0-beta</footer>
+      <footer className="mt-8 text-center text-xs text-slate-500">Math Quest · Um produto educacional da VSA Tecnologia · 0.1.0-beta.1</footer>
     </main>
   );
 }
