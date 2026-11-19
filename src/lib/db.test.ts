@@ -7,8 +7,10 @@ import {
   getLearningOverview,
   recordAnswer,
   recordChallengeAttempt,
+  saveDiagnostic,
   saveMemorySession
 } from './db';
+import { evaluateDiagnostic } from '../learning/diagnostic';
 import { challenges } from '../learning/challenges';
 
 describe('local learning database', () => {
@@ -22,6 +24,7 @@ describe('local learning database', () => {
     expect(overview.challenges.attempted).toBe(0);
     expect(overview.challenges.total).toBe(challenges.length);
     expect(overview.memory).toEqual({ sessions: 0, bestAttempts: null });
+    expect(overview.diagnosticCompleted).toBe(false);
   });
 
   it('stores challenge attempts, memory sessions and practice together', async () => {
@@ -37,6 +40,11 @@ describe('local learning database', () => {
     expect(overview.challenges).toMatchObject({ attempted: 2, solved: 1, attempts: 3, correct: 1, accuracy: 33 });
     expect(overview.challenges.items.find(item => item.id === 'logic-sequence')?.status).toBe('in-progress');
     expect(overview.memory).toEqual({ sessions: 2, bestAttempts: 7, lastCompletedAt: '2026-11-19T12:00:00.000Z' });
+  });
+
+  it('marks the diagnostic as completed once a result is saved', async () => {
+    await saveDiagnostic(evaluateDiagnostic([], '2026-11-19T09:00:00.000Z'));
+    expect((await getLearningOverview()).diagnosticCompleted).toBe(true);
   });
 
   it('keeps existing beta data when upgrading from schema version 2', async () => {

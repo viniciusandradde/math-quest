@@ -1,4 +1,4 @@
-import { fireEvent, render, screen } from '@testing-library/react';
+import { fireEvent, render, screen, within } from '@testing-library/react';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { summarizeChallengeAttempts } from '../learning/challenges';
 
@@ -18,7 +18,8 @@ import App from './App';
 const emptyOverview = () => ({
   multiplication: { factsSeen: 0, attempts: 0, correct: 0, accuracy: 0 },
   challenges: summarizeChallengeAttempts([]),
-  memory: { sessions: 0, bestAttempts: null }
+  memory: { sessions: 0, bestAttempts: null },
+  diagnosticCompleted: false
 });
 
 describe('App shell', () => {
@@ -27,14 +28,25 @@ describe('App shell', () => {
     dbMock.getLearningOverview.mockResolvedValue(emptyOverview());
   });
 
-  it('renders the home screen and main navigation', async () => {
+  it('renders the home screen, explorer level and main navigation', async () => {
     render(<App />);
-    expect(await screen.findByRole('heading', { level: 1 })).toHaveTextContent('Sua próxima descoberta');
+    expect(await screen.findByRole('heading', { level: 1, name: 'Math Quest: a aventura da matemática' })).toBeInTheDocument();
+    expect(screen.getByRole('heading', { name: 'Explorador Nível 1' })).toBeInTheDocument();
     expect(screen.getByRole('navigation', { name: 'Navegação principal' })).toBeInTheDocument();
     expect(screen.getByRole('button', { name: 'Início' })).toHaveAttribute('aria-current', 'page');
+    expect(within(screen.getByRole('list', { name: 'Coleção de itens' })).getAllByRole('listitem')).toHaveLength(10);
   });
 
-  it('opens the memory game from the home card and from the navigation', async () => {
+  it('shows the six missions on the map and opens the chosen one', async () => {
+    render(<App />);
+    const map = await screen.findByRole('list', { name: 'Mapa de missões' });
+    expect(within(map).getAllByRole('button')).toHaveLength(6);
+    fireEvent.click(within(map).getByRole('button', { name: /Missão 3: Compra no centro de comando/ }));
+    expect(screen.getByText(/DESAFIO 3 \//)).toBeInTheDocument();
+    expect(screen.getByRole('heading', { level: 1 })).toHaveTextContent('Compra no centro de comando');
+  });
+
+  it('opens the memory game from its world card and from the navigation', async () => {
     render(<App />);
     fireEvent.click(await screen.findByRole('button', { name: /Memória matemática/ }));
     expect(screen.getByRole('heading', { level: 1 })).toHaveTextContent('Conecte cada operação ao resultado');
@@ -47,7 +59,7 @@ describe('App shell', () => {
 
   it('records each strategic challenge answer locally', async () => {
     render(<App />);
-    fireEvent.click(await screen.findByRole('button', { name: /Iniciar missão estratégica/ }));
+    fireEvent.click(await screen.findByRole('button', { name: /JOGAR/ }));
     expect(screen.getByText(/DESAFIO 1 \//)).toBeInTheDocument();
     fireEvent.change(screen.getByLabelText(/Sua resposta/), { target: { value: '17' } });
     fireEvent.click(screen.getByRole('button', { name: 'Conferir resposta' }));
@@ -55,7 +67,15 @@ describe('App shell', () => {
     expect(dbMock.recordChallengeAttempt).toHaveBeenCalledWith(expect.objectContaining({ challengeId: 'rescue-stock', correct: true, value: 17 }));
   });
 
-  it('shows challenge and memory progress in the guardian summary', async () => {
+  it('lets the child turn sound effects off and on', async () => {
+    render(<App />);
+    fireEvent.click(await screen.findByRole('button', { name: 'Desligar som' }));
+    expect(screen.getByRole('button', { name: 'Ligar som' })).toHaveAttribute('aria-pressed', 'false');
+    fireEvent.click(screen.getByRole('button', { name: 'Ligar som' }));
+    expect(screen.getByRole('button', { name: 'Desligar som' })).toHaveAttribute('aria-pressed', 'true');
+  });
+
+  it('shows challenge, memory and collection progress in the guardian summary', async () => {
     dbMock.getLearningOverview.mockResolvedValue({
       ...emptyOverview(),
       challenges: summarizeChallengeAttempts([
@@ -65,7 +85,7 @@ describe('App shell', () => {
       memory: { sessions: 3, bestAttempts: 7, lastCompletedAt: '2026-11-19T11:00:00.000Z' }
     });
     render(<App />);
-    fireEvent.click(screen.getByRole('button', { name: 'Responsáveis' }));
+    fireEvent.click(screen.getByRole('button', { name: 'Progresso' }));
     expect(await screen.findByText('2 / 6')).toBeInTheDocument();
     const list = screen.getByRole('list', { name: 'Progresso por desafio' });
     expect(list).toHaveTextContent('Estoque de energia');
@@ -73,5 +93,8 @@ describe('App shell', () => {
     expect(list).toHaveTextContent('Em andamento');
     expect(screen.getByText('Partidas concluídas').nextSibling).toHaveTextContent('3');
     expect(screen.getByText('Menos tentativas').nextSibling).toHaveTextContent('7');
+    const items = screen.getByRole('list', { name: 'Itens e como conquistar' });
+    expect(items).toHaveTextContent('Chip IA');
+    expect(within(items).getAllByText('Conquistado').length).toBeGreaterThanOrEqual(3);
   });
 });

@@ -20,6 +20,7 @@ export type LearningOverview = {
   multiplication: ProgressSummary;
   challenges: ChallengeSummary;
   memory: MemorySummary;
+  diagnosticCompleted: boolean;
 };
 
 export class MathQuestDatabase extends Dexie {
@@ -84,6 +85,6 @@ export async function getMemorySummary(): Promise<MemorySummary> {
 }
 
 export async function getLearningOverview(): Promise<LearningOverview> {
-  const [multiplication, challenges, memory] = await Promise.all([getProgressSummary(), getChallengeSummary(), getMemorySummary()]);
-  return { multiplication, challenges, memory };
+  const [multiplication, challenges, memory, diagnostics] = await Promise.all([getProgressSummary(), getChallengeSummary(), getMemorySummary(), db.assessments.count()]);
+  return { multiplication, challenges, memory, diagnosticCompleted: diagnostics > 0 };
 }
