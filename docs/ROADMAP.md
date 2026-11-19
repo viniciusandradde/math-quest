@@ -27,6 +27,8 @@
 - [x] Tela de desafios estratégicos com resposta construída e explicação.
 - [x] Memória matemática: operação × resultado, sem cronômetro, com feedback explicativo.
 - [x] Registro local das tentativas dos desafios e das partidas de memória.
+- [x] Mapa de missões, XP, nível e coleção de itens ligados a evidências de aprendizagem.
+- [x] Identidade visual do brand board aplicada a todas as telas.
 - [ ] Circuito matemático.
 - [ ] Fábrica de robôs.
 - [ ] Escape matemático.

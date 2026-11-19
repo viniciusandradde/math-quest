@@ -56,6 +56,7 @@ O universo do Math Quest combina robótica, exploração, laboratório, tecnolog
 - [Ilha dos desafios](public/assets/environments/challenge-island.svg)
 - [Itens colecionáveis](public/assets/items/collectibles.svg)
 - [Catálogo de assets](public/assets/ASSET-CATALOG.md)
+- [Brand board de referência](assets/brand/reference/math-quest-brand-board.png) e [kit usado no app](public/assets/kit/)
 - [Materiais físicos e orientações de impressão](docs/PRINTABLES.md)
 - [Gabarito das missões avançadas](docs/CHALLENGE-ANSWER-KEY.md)
 - [Banco digital de desafios](src/learning/challenges.ts)
@@ -131,7 +132,8 @@ A proposta é conectar duas competências:
 |---|---|---|
 | Frontend | React + TypeScript | Interface e componentes |
 | Build | Vite | Desenvolvimento e compilação |
-| Estilos | Tailwind CSS | Design responsivo |
+| Estilos | Tailwind CSS | Design responsivo e tokens da marca |
+| Tipografia | Orbitron + Inter (@fontsource) | Títulos e textos, empacotadas para uso offline |
 | Jogos | Phaser (integração progressiva) | Motor previsto para experiências interativas 2D |
 | Estado | Zustand | Estado da experiência |
 | Persistência local | Dexie + IndexedDB | Perfil e progresso no dispositivo |
