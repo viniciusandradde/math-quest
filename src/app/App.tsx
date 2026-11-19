@@ -1,8 +1,10 @@
 import { useEffect, useMemo, useState } from 'react';
 import { buildChoices, buildFact } from '../learning/multiplication';
-import { getProgressSummary, recordAnswer } from '../lib/db';
+import { getProgressSummary, recordAnswer, saveDiagnostic } from '../lib/db';
+import DiagnosticScreen from '../features/diagnostic/DiagnosticScreen';
+import type { DiagnosticResult } from '../learning/diagnostic';
 
-type Screen = 'home' | 'practice' | 'learn' | 'parent';
+type Screen = 'home' | 'diagnostic' | 'practice' | 'learn' | 'parent';
 const logo = import.meta.env.BASE_URL + 'brand/math-quest-logo.svg';
 
 export default function App() {
@@ -50,6 +52,7 @@ export default function App() {
           <h1 className="mt-3 max-w-xl text-4xl font-black leading-tight sm:text-5xl">Sua próxima descoberta começa com <span className="text-orange-400">multiplicação.</span></h1>
           <p className="mt-4 max-w-lg text-slate-300">Explore padrões, resolva enigmas e ajude nosso robô a recuperar a energia do laboratório.</p>
           <div className="mt-7 flex flex-wrap gap-3">
+            <button onClick={() => setScreen('diagnostic')} className="rounded-xl border border-cyan-300/30 px-5 py-3 font-bold text-cyan-100 hover:bg-cyan-300/10">Fazer diagnóstico</button>
             <button onClick={() => setScreen('practice')} className="rounded-xl bg-orange-400 px-5 py-3 font-extrabold text-slate-950 shadow-lg shadow-orange-950/30 hover:bg-orange-300">Começar missão →</button>
             <button onClick={() => setScreen('learn')} className="rounded-xl border border-white/20 px-5 py-3 font-bold text-white hover:bg-white/10">Explorar multiplicação</button>
           </div>
@@ -71,6 +74,7 @@ export default function App() {
         </aside>
       </section>}
 
+      {screen === 'diagnostic' && <DiagnosticScreen onBack={() => setScreen('home')} onComplete={(result: DiagnosticResult) => { void saveDiagnostic(result); }} />}
       {screen === 'practice' && <section className="mx-auto mt-8 max-w-2xl rounded-3xl border border-white/10 bg-[#10223a] p-6 sm:p-9">
         <button onClick={() => setScreen('home')} className="text-sm text-cyan-300">← Voltar ao laboratório</button>
         <p className="mt-7 text-center text-xs font-bold uppercase tracking-[.2em] text-orange-300">Desafio de energia</p>
@@ -107,7 +111,7 @@ export default function App() {
       </section>}
 
       <nav className="mx-auto mt-8 flex max-w-xl justify-center gap-2 rounded-2xl border border-white/10 bg-[#0b1a2c] p-2">
-        {([['home','Início'],['practice','Jogar'],['learn','Aprender'],['parent','Responsáveis']] as [Screen,string][]).map(([id,label])=><button key={id} onClick={() => setScreen(id)} className={'rounded-xl px-3 py-2 text-xs font-bold sm:px-4 ' + (screen === id ? 'bg-blue-500 text-white' : 'text-slate-400 hover:bg-white/5 hover:text-white')}>{label}</button>)}
+        {([['home','Início'],['diagnostic','Diagnóstico'],['practice','Jogar'],['learn','Aprender'],['parent','Responsáveis']] as [Screen,string][]).map(([id,label])=><button key={id} onClick={() => setScreen(id)} className={'rounded-xl px-3 py-2 text-xs font-bold sm:px-4 ' + (screen === id ? 'bg-blue-500 text-white' : 'text-slate-400 hover:bg-white/5 hover:text-white')}>{label}</button>)}
       </nav>
       <footer className="mt-8 text-center text-xs text-slate-500">Math Quest · Um produto educacional da VSA Tecnologia · MVP 0.1</footer>
     </main>
