@@ -4,6 +4,7 @@ import { getProgressSummary, recordAnswer, saveDiagnostic } from '../lib/db';
 import DiagnosticScreen from '../features/diagnostic/DiagnosticScreen';
 import ArrayLab from '../features/lab/ArrayLab';
 import ChallengeScreen from '../features/challenges/ChallengeScreen';
+import PwaStatus from '../components/PwaStatus';
 import type { DiagnosticResult } from '../learning/diagnostic';
 
 type Screen = 'home' | 'diagnostic' | 'practice' | 'learn' | 'parent' | 'challenges';
@@ -47,6 +48,8 @@ export default function App() {
         </button>
         <span className="rounded-full border border-cyan-300/20 bg-cyan-300/10 px-3 py-1 text-xs text-cyan-200">MISSÕES · NÍVEL 5º ANO</span>
       </header>
+
+      <PwaStatus />
 
       {screen === 'home' && <section className="mt-8 grid gap-6 md:grid-cols-[1.15fr_.85fr]">
         <div className="relative overflow-hidden rounded-3xl border border-blue-300/15 bg-gradient-to-br from-[#12365b] to-[#10213a] p-6 shadow-2xl sm:p-9" style={{ backgroundImage: `linear-gradient(115deg, rgba(7,20,38,.94), rgba(16,34,58,.82)), url("${import.meta.env.BASE_URL}assets/environments/math-lab.svg")`, backgroundSize: "cover", backgroundPosition: "center" }}>
@@ -127,7 +130,7 @@ export default function App() {
       <nav className="mx-auto mt-8 flex max-w-xl justify-center gap-2 rounded-2xl border border-white/10 bg-[#0b1a2c] p-2">
         {([['home','Início'],['diagnostic','Diagnóstico'],['challenges','Desafios'],['practice','Aquecimento'],['learn','Aprender'],['parent','Responsáveis']] as [Screen,string][]).map(([id,label])=><button key={id} onClick={() => setScreen(id)} className={'rounded-xl px-3 py-2 text-xs font-bold sm:px-4 ' + (screen === id ? 'bg-blue-500 text-white' : 'text-slate-400 hover:bg-white/5 hover:text-white')}>{label}</button>)}
       </nav>
-      <footer className="mt-8 text-center text-xs text-slate-500">Math Quest · Um produto educacional da VSA Tecnologia · MVP 0.1</footer>
+      <footer className="mt-8 text-center text-xs text-slate-500">Math Quest · Um produto educacional da VSA Tecnologia · 0.1.0-beta</footer>
     </main>
   );
 }
