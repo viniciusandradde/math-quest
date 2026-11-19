@@ -87,7 +87,7 @@ export default function HomeScreen({ overview, level, collection, onNavigate, on
       <div className="px-4 pb-6 sm:px-8">
         <div className="mt-3 flex items-end justify-between gap-3">
           <div className="relative">
-            <p className="chip">5º ano · 6 missões</p>
+            <p className="chip">11 a 13 anos · 6 missões</p>
             <h2 className="mt-2 font-display text-2xl font-black text-white">Mapa de Missões</h2>
             <p className="mt-1 text-sm text-slate-300">Toque em uma ilha para jogar. Cada missão resolvida acende uma estrela.</p>
           </div>

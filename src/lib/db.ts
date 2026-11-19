@@ -3,6 +3,8 @@ import Dexie, { type Table } from 'dexie';
 import type { DiagnosticResult } from '../learning/diagnostic';
 import { summarizeChallengeAttempts, type ChallengeAttempt, type ChallengeSummary } from '../learning/challenges';
 import { summarizeMemorySessions, type MemorySessionResult, type MemorySummary } from '../learning/memory';
+import { summarizeEarlyAttempts, type EarlyAttempt, type EarlySummary } from '../learning/early';
+import { isAgeProfileId, type AgeProfileId } from '../learning/profiles';
 
 export type ProgressRecord = {
   id: string;
@@ -13,6 +15,9 @@ export type ProgressRecord = {
 
 export type ChallengeAttemptRecord = ChallengeAttempt & { id?: number };
 export type MemorySessionRecord = MemorySessionResult & { id?: number };
+export type EarlyAttemptRecord = EarlyAttempt & { id?: number };
+/** Configurações do aparelho. Hoje guarda só a faixa de idade escolhida. */
+export type SettingRecord = { id: string; value: string };
 
 export type ProgressSummary = { factsSeen: number; attempts: number; correct: number; accuracy: number };
 
@@ -28,6 +33,8 @@ export class MathQuestDatabase extends Dexie {
   assessments!: Table<DiagnosticResult & { id: string }, string>;
   challengeAttempts!: Table<ChallengeAttemptRecord, number>;
   memorySessions!: Table<MemorySessionRecord, number>;
+  earlyAttempts!: Table<EarlyAttemptRecord, number>;
+  settings!: Table<SettingRecord, string>;
   constructor(name = 'math-quest') {
     super(name);
     this.version(1).stores({ progress: 'id, lastSeenAt' });
@@ -37,6 +44,14 @@ export class MathQuestDatabase extends Dexie {
       assessments: 'id, completedAt',
       challengeAttempts: '++id, challengeId, answeredAt',
       memorySessions: '++id, completedAt'
+    });
+    this.version(4).stores({
+      progress: 'id, lastSeenAt',
+      assessments: 'id, completedAt',
+      challengeAttempts: '++id, challengeId, answeredAt',
+      memorySessions: '++id, completedAt',
+      earlyAttempts: '++id, activity, answeredAt',
+      settings: 'id'
     });
   }
 }
@@ -87,4 +102,23 @@ export async function getMemorySummary(): Promise<MemorySummary> {
 export async function getLearningOverview(): Promise<LearningOverview> {
   const [multiplication, challenges, memory, diagnostics] = await Promise.all([getProgressSummary(), getChallengeSummary(), getMemorySummary(), db.assessments.count()]);
   return { multiplication, challenges, memory, diagnosticCompleted: diagnostics > 0 };
+}
+
+const AGE_PROFILE_KEY = 'ageProfile';
+
+export async function loadAgeProfile(): Promise<AgeProfileId | null> {
+  const record = await db.settings.get(AGE_PROFILE_KEY);
+  return isAgeProfileId(record?.value) ? record.value : null;
+}
+
+export async function saveAgeProfile(profile: AgeProfileId) {
+  await db.settings.put({ id: AGE_PROFILE_KEY, value: profile });
+}
+
+export async function recordEarlyAttempt(attempt: EarlyAttempt) {
+  await db.earlyAttempts.add({ ...attempt });
+}
+
+export async function getEarlySummary(): Promise<EarlySummary> {
+  return summarizeEarlyAttempts(await db.earlyAttempts.toArray());
 }

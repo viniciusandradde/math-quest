@@ -7,6 +7,10 @@ import {
   getLearningOverview,
   recordAnswer,
   recordChallengeAttempt,
+  getEarlySummary,
+  loadAgeProfile,
+  recordEarlyAttempt,
+  saveAgeProfile,
   saveDiagnostic,
   saveMemorySession
 } from './db';
@@ -59,8 +63,30 @@ describe('local learning database', () => {
     expect(await upgraded.progress.get('6x9')).toMatchObject({ attempts: 3, correct: 2 });
     await upgraded.challengeAttempts.add({ challengeId: 'fraction-parts', correct: true, value: 39, answeredAt: '2026-11-19T10:00:00.000Z' });
     expect(await upgraded.challengeAttempts.count()).toBe(1);
-    expect(upgraded.verno).toBe(3);
+    expect(upgraded.verno).toBe(4);
+    expect(await upgraded.settings.count()).toBe(0);
     upgraded.close();
     await Dexie.delete(name);
   });
+
+  it('remembers only the chosen age band', async () => {
+    expect(await loadAgeProfile()).toBeNull();
+    await saveAgeProfile('age-3-6');
+    expect(await loadAgeProfile()).toBe('age-3-6');
+    await saveAgeProfile('age-11-13');
+    expect(await loadAgeProfile()).toBe('age-11-13');
+    expect(await db.settings.toArray()).toEqual([{ id: 'ageProfile', value: 'age-11-13' }]);
+    await db.settings.put({ id: 'ageProfile', value: 'invalido' });
+    expect(await loadAgeProfile()).toBeNull();
+  });
+
+  it('stores early-years evidence separately from the 11–13 progress', async () => {
+    await recordEarlyAttempt({ activity: 'contar', level: 1, firstTry: true, tries: 1, answeredAt: '2026-11-19T10:00:00.000Z' });
+    await recordEarlyAttempt({ activity: 'contar', level: 1, firstTry: false, tries: 2, answeredAt: '2026-11-19T10:01:00.000Z' });
+    const early = await getEarlySummary();
+    expect(early).toMatchObject({ attempts: 2, firstTry: 1, stars: 1 });
+    const overview = await getLearningOverview();
+    expect(overview.challenges.attempts).toBe(0);
+  });
 });
+

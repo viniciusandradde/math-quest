@@ -1,8 +1,13 @@
 import { fireEvent, render, screen, within } from '@testing-library/react';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { summarizeChallengeAttempts } from '../learning/challenges';
+import { summarizeEarlyAttempts } from '../learning/early';
 
 const dbMock = vi.hoisted(() => ({
+  loadAgeProfile: vi.fn(),
+  saveAgeProfile: vi.fn(async () => {}),
+  getEarlySummary: vi.fn(),
+  recordEarlyAttempt: vi.fn(async () => {}),
   getLearningOverview: vi.fn(),
   recordAnswer: vi.fn(async () => {}),
   recordChallengeAttempt: vi.fn(async () => {}),
@@ -22,9 +27,58 @@ const emptyOverview = () => ({
   diagnosticCompleted: false
 });
 
-describe('App shell', () => {
+describe('age profile gate', () => {
   beforeEach(() => {
     vi.clearAllMocks();
+    dbMock.loadAgeProfile.mockResolvedValue(null);
+    dbMock.getEarlySummary.mockResolvedValue(summarizeEarlyAttempts([]));
+    dbMock.getLearningOverview.mockResolvedValue(emptyOverview());
+  });
+
+  it('asks who is playing on first open and offers both age bands', async () => {
+    render(<App />);
+    expect(await screen.findByRole('heading', { name: 'Quem vai jogar?' })).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: 'Pequeno Explorador, 3 a 6 anos' })).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: 'Explorador Estratégico, 11 a 13 anos' })).toBeInTheDocument();
+  });
+
+  it('opens the 3–6 activities and remembers the choice', async () => {
+    render(<App />);
+    fireEvent.click(await screen.findByRole('button', { name: 'Pequeno Explorador, 3 a 6 anos' }));
+    expect(dbMock.saveAgeProfile).toHaveBeenCalledWith('age-3-6');
+    const list = await screen.findByRole('list', { name: 'Brincadeiras' });
+    expect(within(list).getAllByRole('button')).toHaveLength(6);
+    expect(screen.getByText(/Oi! Eu sou o Robô/)).toBeInTheDocument();
+    expect(screen.queryByRole('button', { name: /JOGAR/ })).not.toBeInTheDocument();
+  });
+
+  it('opens straight into the saved profile and lets an adult switch it', async () => {
+    dbMock.loadAgeProfile.mockResolvedValue('age-3-6');
+    render(<App />);
+    fireEvent.click(await screen.findByRole('button', { name: 'Adultos' }));
+    fireEvent.click(screen.getByRole('button', { name: 'Trocar perfil de idade' }));
+    fireEvent.click(screen.getByRole('button', { name: 'Escolher outro perfil' }));
+    fireEvent.click(await screen.findByRole('button', { name: 'Explorador Estratégico, 11 a 13 anos' }));
+    expect(dbMock.saveAgeProfile).toHaveBeenLastCalledWith('age-11-13');
+    expect(await screen.findByRole('button', { name: /JOGAR/ })).toBeInTheDocument();
+  });
+
+  it('can go back without switching', async () => {
+    dbMock.loadAgeProfile.mockResolvedValue('age-11-13');
+    render(<App />);
+    fireEvent.click(await screen.findByRole('button', { name: 'Progresso' }));
+    fireEvent.click(screen.getByRole('button', { name: 'Trocar perfil de idade' }));
+    fireEvent.click(screen.getByRole('button', { name: 'Escolher outro perfil' }));
+    fireEvent.click(await screen.findByRole('button', { name: 'Voltar sem trocar' }));
+    expect(await screen.findByRole('button', { name: /JOGAR/ })).toBeInTheDocument();
+    expect(dbMock.saveAgeProfile).toHaveBeenLastCalledWith('age-11-13');
+  });
+});
+
+describe('11–13 explorer app', () => {
+  beforeEach(() => {
+    vi.clearAllMocks();
+    dbMock.loadAgeProfile.mockResolvedValue('age-11-13');
     dbMock.getLearningOverview.mockResolvedValue(emptyOverview());
   });
 
@@ -85,7 +139,7 @@ describe('App shell', () => {
       memory: { sessions: 3, bestAttempts: 7, lastCompletedAt: '2026-11-19T11:00:00.000Z' }
     });
     render(<App />);
-    fireEvent.click(screen.getByRole('button', { name: 'Progresso' }));
+    fireEvent.click(await screen.findByRole('button', { name: 'Progresso' }));
     expect(await screen.findByText('2 / 6')).toBeInTheDocument();
     const list = screen.getByRole('list', { name: 'Progresso por desafio' });
     expect(list).toHaveTextContent('Estoque de energia');
