@@ -1,6 +1,7 @@
 # Changelog
 
 ## Não publicado
+- README reescrito com a metodologia completa: referências e onde aparecem, ciclo pedagógico, princípios para 3 a 6 e 11 a 13 anos, professor de voz, avaliação e recompensas, acessibilidade e alinhamento com a BNCC (Educação Infantil e Matemática do Ensino Fundamental).
 - Perfis por idade: na primeira abertura o adulto escolhe 3 a 6 ou 11 a 13 anos; só a faixa fica salva e a troca exige confirmação.
 - Pequeno Explorador (3 a 6 anos): Ache o igual, Conte comigo (tocar e contar), Onde tem mais?, Formas, O que vem depois? e Juntar, com duas opções no nível 1, níveis adaptativos e estrelas por acerto de primeira.
 - Professor de voz calmo (Web Speech pt-BR, bem devagar, frases curtas com pausas, legenda e botão "Ouvir de novo"), com velocidade ajustável na área dos adultos.

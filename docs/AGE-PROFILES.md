@@ -21,7 +21,17 @@ Na primeira vez que o app é aberto, um adulto escolhe quem vai jogar. O app gua
 - **Redundância de cor e forma**: nas sequências e no "Ache o igual", forma e cor mudam juntas, o que ajuda crianças daltônicas.
 - **Apoio para quem ainda não lê números**: no nível 1, cada numeral vem com pontinhos.
 
-Alinhamento de referência (a validar com educador): BNCC, Educação Infantil, campo de experiência "Espaços, tempos, quantidades, relações e transformações": contar oralmente objetos, relacionar números às quantidades, comparar quantidades, classificar por atributos (forma e cor) e reconhecer sequências.
+### Alinhamento com a BNCC (Educação Infantil)
+Campo de experiência **"Espaços, tempos, quantidades, relações e transformações"**, grupos *crianças bem pequenas* (EI02) e *crianças pequenas* (EI03). Alinhamento de referência, descrito com nossas palavras; valide no [documento oficial](http://basenacionalcomum.mec.gov.br/) com um educador.
+
+| Brincadeira | Objetivos |
+|---|---|
+| Ache o igual, Formas | EI02ET05 (classificar por um atributo: cor, forma), EI03ET05 (classificar por semelhanças e diferenças) |
+| Conte comigo | EI02ET07 (contar oralmente objetos), EI03ET07 (relacionar números às quantidades) |
+| Onde tem mais?, Juntar | EI03ET07 |
+| O que vem depois? | EI03ET07 (antes, depois e entre em uma sequência) |
+
+O professor de voz também exercita a escuta e a compreensão de instruções orais (campo "Escuta, fala, pensamento e imaginação"). O alinhamento completo, incluindo o perfil de 11 a 13 anos, está no [README](../README.md#alinhamento-com-a-bncc).
 
 ### Brincadeiras
 | Brincadeira | Habilidade | A partir de |

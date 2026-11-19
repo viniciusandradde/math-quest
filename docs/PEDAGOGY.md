@@ -31,7 +31,13 @@ Revisitar fatos matemáticos ao longo de diferentes sessões. Os intervalos deve
 ### Aprendizagem baseada em jogos
 Utilizar objetivos claros, feedback, desafios, exploração e recompensas significativas. A recompensa não deve substituir o objetivo de aprendizagem.
 
-## Adequação por etapa escolar\n\nO conteúdo deve ser organizado por etapa e evidência de aprendizagem, não apenas por idade. A coleção atual prioriza o 5º ano do Ensino Fundamental, com desafios de extensão para a transição ao 6º ano. A retomada de grupos iguais e matrizes permanece disponível como apoio, mas não deve ser apresentada como desafio principal para estudantes que já dominam esses conceitos.\n\nA coleção principal trabalha problemas em várias etapas, frações de quantidades, decimais em situações monetárias, área e perímetro, padrões e justificativa de estratégias. O nível de cada estudante deve ser ajustado após observação e diagnóstico pedagógico.\n\n## Jornada de domínio
+## Adequação por etapa escolar
+
+O conteúdo deve ser organizado por etapa e evidência de aprendizagem, não apenas por idade. A coleção atual prioriza o 5º ano do Ensino Fundamental, com desafios de extensão para a transição ao 6º ano. A retomada de grupos iguais e matrizes permanece disponível como apoio, mas não deve ser apresentada como desafio principal para estudantes que já dominam esses conceitos.
+
+A coleção principal trabalha problemas em várias etapas, frações de quantidades, decimais em situações monetárias, área e perímetro, padrões e justificativa de estratégias. O nível de cada estudante deve ser ajustado após observação e diagnóstico pedagógico.
+
+## Jornada de domínio
 1. Descobrir grupos iguais e adição repetida.
 2. Visualizar matrizes e padrões.
 3. Relacionar multiplicação e divisão.
