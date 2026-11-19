@@ -1,5 +1,19 @@
 # Catálogo de assets — Math Quest
 
+## Kit do brand board (em uso no app)
+
+Origem: brand board e folha de poses do mascote fornecidos pela VSA Tecnologia, guardados em `assets/brand/reference/`. Os recortes são gerados por `scripts/extract-brand-kit.py` (Pillow + numpy), que remove o fundo escuro dos personagens e itens preservando o visor do robô.
+
+| Pasta | Conteúdo | Uso |
+|---|---|---|
+| [kit/hero](kit/hero/) | Arte principal com a marca e "A aventura da matemática" | Tela inicial |
+| [kit/mascot](kit/mascot/) | 10 expressões (`expr-*`) e 4 poses de corpo inteiro (`pose-*`) | Feedback, mapa, celebrações |
+| [kit/scenarios](kit/scenarios/) | Laboratório Matemático, Fábrica de Robôs, Base Espacial, Ilha dos Desafios (com o nome do cenário) | Mundos da home e faixas das telas |
+| [kit/items](kit/items/) | Moeda, energia, engrenagem, cristal, chip IA, baú, estrela, conquista, XP, chave | Coleção, cabeçalho, progresso |
+| [kit/printables](kit/printables/) | Prévia do Caderno de Missões | Seção de materiais impressos |
+
+Limitação: o board tem 1672 px de largura, então expressões, cenários e itens foram ampliados 2× a partir de recortes pequenos. Para telas grandes, vale gerar versões em alta resolução de cada elemento e substituir os arquivos mantendo os nomes.
+
 ## Identidade visual
 
 - Logo oficial: [math-quest-logo.svg](../brand/math-quest-logo.svg)
@@ -38,7 +52,7 @@
 
 ## Convenções
 
-- Preservar a paleta da marca: `#071426`, `#12365B`, `#168BEA`, `#42E6E3`, `#FF9C38`, `#DCECFF`.
+- Preservar a paleta do brand board: `#0B1B3B`, `#0D6EFD`, `#00E5FF`, `#FF8A00`, `#FFCB57` (acerto `#21C02B`).
 - Não usar imagens geradas como substitutas do logo mestre.
 - Não inserir textos essenciais dentro de imagens; manter textos no HTML para acessibilidade e tradução.
 - Assets devem funcionar em telas mobile e manter contraste.
